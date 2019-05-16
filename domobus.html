@@ -28,7 +28,7 @@
 
 <!-- Navbar -->
 <div class="w3-top">
-  <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+  <div class="w3-bar w3-yellow w3-card w3-left-align w3-large">
     <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
     <a href="./index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
     <a href="./editor.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Editor</a>
@@ -49,7 +49,7 @@
 </div>
 
 <!-- Header -->
-<header class="w3-container w3-red w3-center" style="padding:128px 16px">
+<header class="w3-container w3-yellow w3-center" style="padding:128px 16px">
   <h1 class="w3-margin w3-jumbo">More about DomoBus: </h1>
   <!-- <p class="w3-xlarge">Made by Ferdous Nasri</p> -->
   <!-- <button href="#" class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Email Ferdous</button> -->
@@ -60,11 +60,16 @@
   <div class="w3-content">
     <div class="w3-twothird">
       <h1>A little bit about DomoBus Systems</h1>
-      <h5 class="w3-padding-32">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</h5>
+      <h5 class="w3-padding-32">One of the key aspects of the DomoBus approach is its model of a home automation device. That model is very simple and modular, making the DomoBus a flexible and expandable system that, at the same time, offers a very good level of functionality.</h5>
 
-      <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <p class="w3-text-grey">In DomoBus a home automation device is a generic entity characterized by one or more properties. The definition of any device can be done dynamically, adding as many properties as required to express the functional level needed for the device.
+For example, if we want to represent a temperature sensor, we can refer to a generic entity (a device) that has only one property – the current temperature. If we want to represent an adjustable light, we can describe it using two properties: a “state” property that identifies if the light is turned on or off, and an “intensity” property that, for example, represents the light intensity in a scale from 0 to 100%. This model can easily be used to represent more complex devices such a TV. Assuming it is only relevant to control the state, channel and volume of the TV, only three properties are needed: “state” (on/off), “channel” (1-250) and “volume” (0-20). (Note: the physical interface with the TV could be implemented with a remote command emulator that emits infrared signals accordingly with the values of the device’s properties; so, it can be applied to any TV; a similar approach can be used with air-conditioners and other equipments).</p>
+
+      <p>
+Given that home automation devices are represented in such a generic and uniform way, this allows the definition of an also simple and generic way to interact with them, which is based on only three types of messages:
+• GET – Allows reading the value of a property of a given device; using this message one can, at any moment, monitor the state of any device.
+• SET – Allows writing a new value to a property of a device; this offers a mechanism to change the state of a device and, so, command it.
+• NOTIFY – This message is transmitted automatically by the devices whenever the value of one of its properties changes. This allows supervision-level applications or user-interface applications to be always up to date, without the need to continuously send GET messages to know the system current state. The existence of the NOTIFY messages make the communication infrastructure much more effective (reducing the number of messages) and minimizes system update latency (period of time between a change in a property and the time the system gets updated).</p>
     </div>
 
     <div class="w3-third w3-center">
@@ -94,7 +99,7 @@
 
 <!-- Footer -->
 <!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity"> -->
-<footer class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+<footer class="w3-container w3-black w3-center w3-opacity w3-padding-32">
   <!-- <div class="w3-xlarge w3-padding-32">
     <i class="fa fa-facebook-official w3-hover-opacity"></i>
     <i class="fa fa-instagram w3-hover-opacity"></i>

@@ -3,16 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>DomoBus Specification Editor</title>
-  <!-- </head>
-  <body>
-    <h1>DomoBus Specification Editor</h1>
-    <h2>Welcome to the online editor for the DomoBus system Specification language (XML based) for a "home automation device".</h2>
-
-
-    <script type="text/javascript">
-      document.write("Hello World");
-    </script>
-  </body> -->
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -35,55 +25,18 @@
       x.className = x.className.replace(" w3-show", "");
     }
   }
+
+
+
+
+
+
   </script>
-<script>
-  var counter = 1;
-
-  function moreFields() {
-    counter++;
-    var newFields = document.getElementById('readroot').cloneNode(true);
-    newFields.id = '';
-    newFields.style.display = 'block';
-    var newField = newFields.childNodes;
-    for (var i=0;i<newField.length;i++) {
-      var theName = newField[i].name
-      if (theName)
-        newField[i].name = theName + counter;
-    }
-    var insertHere = document.getElementById('writeroot');
-    insertHere.parentNode.insertBefore(newFields,insertHere);
-    }
-
-  window.onload = moreFields;
-
-
-  // function addFields(){
-  //            // Number of inputs to create
-  //            var number = document.getElementById("member").value;
-  //            // Container <div> where dynamic content will be placed
-  //            var container = document.getElementById("container");
-  //            // Clear previous contents of the container
-  //            while (container.hasChildNodes()) {
-  //                container.removeChild(container.lastChild);
-  //            }
-  //            for (i=0;i<number;i++){
-                 // Append a node with a random text
-                 // container.appendChild(document.createTextNode("Member " + (i+1)));
-                 // // Create an <input> element, set its type and name attributes
-                 // var input = document.createElement("input");
-                 // input.type = "text";
-                 // input.name = "member" + i;
-                 // container.appendChild(input);
-                 // // Append a line break
-                 // container.appendChild(document.createElement("br"));
-             // }
-  //        }
-</script>
 <body>
 
   <!-- Navbar -->
   <div class="w3-top">
-    <div class="w3-bar w3-red w3-card w3-left-align w3-large">
+    <div class="w3-bar w3-yellow w3-card w3-left-align w3-large">
       <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
       <a href="./index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
       <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Editor</a>
@@ -102,24 +55,25 @@
   </div>
 
   <!-- Header -->
-  <header class="w3-container w3-red w3-center" style="padding:128px 16px">
+  <header class="w3-container w3-yellow w3-center" style="padding:128px 16px 60px">
     <h1>DomoBus Specification Editor</h1>
-    <p class="w3-medium">Do you have an XML file already? Want us to read it so you can edit it here? Then just upload your file here:</p>
+    <p class="w3-medium">Do you have an XML file already? Want us to read it so you can edit it here? </p>
+    <p>Then just upload your file here:</p>
     <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Upload XML file</button>
   </header>
 
-<h2>Let's start writing/ editing the DomoBus Specification!</h2>
+  <header class="w3-container w3-center" style="padding:20px 16px">
+    <h1>Let's start writing/ editing the DomoBus Specification!</h1>
+    <!-- <p class="w3-medium">Check all your details and if you're done, press the button to create and download the XML file with all your given details.</p> -->
+    <!-- <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Create and Download XML file</button> -->
+  </header>
+
+<!-- <h2>Let's start writing/ editing the DomoBus Specification!</h2> -->
 
 <!-- <h3>Domo Bus System Details: </h3> -->
-  <form>
-    <!-- ID:<br>
-    <input type="text" name="domobus-sys-id"><br>
-    Name:<br>
-    <input type="text" name="lastname">
-  </form>
-  <form action="/action_page.php"> -->
+  <form class="w3-container" style="padding:0px 20px 16px">
   <fieldset>
-    <legend> DomoBus System Details: </legend>
+    <legend> <h4>DomoBus System Details: </h4></legend>
     ID:<br>
     <input type="number" name="domobus-sys-id" value="123" required=true><br>
     Name:<br>
@@ -128,14 +82,12 @@
     <input type="number" name="domobus-sys-version" value="1.0" required=true><br>
     Date:<br>
     <input type="date" name="domobus-sys-date" value="20-04-2019" required=true><br>
-    <!-- <br> -->
-    <!-- <input type="submit" value="Submit"> -->
   </fieldset>
 </form>
 
-<form>
+<form class="w3-container" style="padding:0px 20px 16px">
 <fieldset>
-  <legend> House Structure: </legend>
+  <legend> <h4>House Details:</h4> </legend>
   ID:<br>
   <input type="number" name="house-structure-id" value="98" required=true><br>
   Name:<br>
@@ -144,15 +96,13 @@
   <input type="text" name="house-address" value="Street name, house number" required=true size="50"><br>
   Phone:<br>
   <input type="tel" name="house-phone" value="0123456789" required=true><br>
-
 </fieldset>
 </form>
 
 
 
 <style>
-
-.add_form_field
+.add_form_field_floor,.add_form_field_access
 {
     background-color: #1c97f3;
     border: none;
@@ -167,7 +117,7 @@
 	border:1px solid #186dad;
 
 }
-.delete{
+.delete_access, .delete_floor{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -180,15 +130,14 @@
     cursor: pointer;
 
 }
-
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     var max_fields      = 100;
-    var wrapper         = $(".container1");
-    var add_button      = $(".add_form_field");
+    var wrapper         = $(".floor");
+    var add_button      = $(".add_form_field_floor");
 
     var x = 1;
     $(add_button).click(function(e){
@@ -199,21 +148,7 @@ $(document).ready(function() {
             var floorHeight = "floor-height" + x;
             var divisionName = "division-name" + x;
 
-            // for (var i=0;i<newField.length;i++) {
-            //     var theName = newField[i].name
-            //     if (theName)
-            //       newField[i].name = theName + counter;
-            //   }
-            // container.appendChild(document.createTextNode("Member " + (i+1)));
-            // // Create an <input> element, set its type and name attributes
-            // var input = document.createElement("input");
-            // input.type = "text";
-            // input.name = "member" + i;
-            // container.appendChild(input);
-            // // Append a line break
-            // container.appendChild(document.createElement("br"));
-
-            $(wrapper).append('<div>Floor name: <br><input type="text" name="'+ floorName +'"><br>Height Order:<br><input type="number" name="'+floorHeight+'"><br>Division Name on this floor:<br><input type="text" name="'+divisionName+'"><a href="#" class="delete">Delete this floor and division</a></div>'); //add input box
+            $(wrapper).append('<div>Floor name: <br><input type="text" name="'+ floorName +'"><br>Height Order:<br><input type="number" name="'+floorHeight+'"><br>Division Name on this floor:<br><input type="text" name="'+divisionName+'"><a href="#" class="delete_floor">Delete this floor and division</a></div>'); //add input box
         }
 		else
 		{
@@ -221,13 +156,76 @@ $(document).ready(function() {
 		}
     });
 
-    $(wrapper).on("click",".delete", function(e){
+    $(wrapper).on("click",".delete_floor", function(e){
         e.preventDefault(); $(this).parent('div').remove(); x--;
     })
 });
+
+
+// function myFunction2() {
+//   // var x = document.getElementById("accesslevel");
+//   // var text = "";
+//   // var a = document.getElementById('access_name');
+//
+//   var accessnames = new Array();
+//   accessnames[0] = String(document.getElementById('access_name').value);
+//   // accessnames[0] = String(a.value);
+//
+//   // var i;
+//   // for (i = 0; i < x.length ;i++) {
+//   //   text += x.elements[i].value + "<br>";
+//   // }
+//   document.getElementById("demo").innerHTML = accessnames;
+// }
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".accessLevel");
+    var add_button      = $(".add_form_field_access");
+
+    window.accessnames = new Array();
+    window.accessnames[0] = String(document.getElementById('access_name').value);
+    // var a = document.getElementById('access_name');
+    // accessnames[0] = String(a.value);
+
+    // mycars[0]='Herr';
+    // mycars[1]='Frau';
+
+    var x = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(x < max_fields){
+            x++;
+            var accessName = "access_name" + x;
+            var access_Level = "access-level" + x;
+
+            $(wrapper).append('<div>Name: <br><input type="text" name="'+accessName+'" id="'+accessName+'" value="Admin"><br>Access level:<br><input type="number" name="'+access_Level+'" value="9"><a href="#" class="delete_access">Delete this access level</a></div>'); //add input box
+            window.accessnames[x] = String(document.getElementById(accessName).value);
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_access", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        x--;
+        window.accessnames.splice(x,1);
+    })
+});
+
+// var options = '';
+//
+// for(var i = 0; i < accessnames.length; i++)
+//   options += '<option value="'+accessnames[i]+'" />';
+//
+// document.getElementById('access-levels').innerHTML = options;
 </script>
 
-<div class="container1">
+
+<div class="floor w3-container" style="padding:0px 20px 16px">
+  <fieldset>
     <!-- <div><input type="text" name="mytext[]"></div> -->
     <div>
     Floor name: <br>
@@ -235,30 +233,388 @@ $(document).ready(function() {
     Height Order: <br>
     <input type="number" name="floor-height" value="0"><br>
     Division Name on this floor: <br>
-    <input type="text" name="division-name" value="Living Hall"><br>
+    <input type="text" name="division-name" value="Living Hall">
     </div>
-    <button class="add_form_field">Add another floor or division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <button class="add_form_field_floor">Add another floor or division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+ </fieldset>
+</div>
 
+<form class="accessLevel w3-container" style="padding:0px 20px 16px" id="accesslevel">
+  <fieldset>
+    <legend> <h4>Access level list:</h4> </legend>
+    <div>
+    Name: <br>
+    <input type="text" name="access_name" id="access_name" value="Guest"><br>
+    Access level: <br>
+    <input type="number" name="access-level" value="0">
+    </div>
+    <button class="add_form_field_access">Add another access level &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  </fieldset>
+</form>
+
+<!-- <button onclick="myFunction2()">Try it</button>
+
+<p id="demo"></p> -->
+
+<div class="user w3-container" style="padding:0px 20px 16px" >
+  <fieldset>
+    <legend> <h4>Users list:</h4> </legend>
+    <div>
+    Name: <br>
+    <input type="text" name="user-name" value="John"><br>
+    Password: <br>
+    <input type="password" name="user-password"><br>
+    Access Level: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist>
+    <!-- TODO: drop-down doesn't work -->
+    <script>
+    var list = document.getElementById('access_levels');
+
+    window.accessnames.forEach(function(item){
+       var option = document.createElement('option');
+       option.value = item;
+       list.appendChild(option);
+    });
+    </script>
+
+    </div>
+    <button class="add_form_field_access">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  </fieldset>
+</div>
+
+<!-- <script type="text/javascript">
+
+// var accessnames = new Array();
+// accessnames[0] = String(document.getElementById('access_name').value);
+// for(var i = 0; i < accessnames.length; i++)
+
+  // var options = '';
+  //
+  // for(var i = 0; i < accessnames.length; i++)
+  //   options += '<option value="'+accessnames[i]+'" />';
+  //
+  // document.getElementById('access_levels').innerHTML = options;
+
+
+  // var list = document.getElementById('access_levels');
+  //
+  // window.accessnames.forEach(function(item){
+  //    var option = document.createElement('option');
+  //    option.value = item;
+  //    list.appendChild(option);
+  // });
+
+  function myFunction3() {
+    // var x = document.getElementById("accesslevel");
+    // var text = "";
+    // var a = document.getElementById('access_name');
+
+    // var accessnames = new Array();
+    // accessnames[0] = String(document.getElementById('access_name').value);
+    // accessnames[0] = String(a.value);
+
+    // var i;
+    // for (i = 0; i < x.length ;i++) {
+    //   text += x.elements[i].value + "<br>";
+    // }
+    document.getElementById("demo2").innerHTML = accessnames.item;
+  }
+</script> -->
+
+<!-- <button onclick="myFunction3()">Try it</button>
+
+<p id="demo2"></p> -->
+
+
+
+
+<!-- <input name="car" list="anrede" />
+<datalist id="anrede"></datalist>
+
+<script>
+var mycars = ['Herr','Frau'];
+var list = document.getElementById('anrede');
+
+mycars.forEach(function(item){
+   var option = document.createElement('option');
+   option.value = item;
+   list.appendChild(option);
+});
+</script> -->
+
+
+<div class="service w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Service list:</h4> </legend>
+    <div>
+    Name: <br>
+    <input type="text" name="service-name" value="Lighting">
+  </div>
+  <button class="add_form_field_access">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+</fieldset>
 </div>
 
 
+<style>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 400px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -60px;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+</style>
+
+<div class="w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Value Types:</h4> </legend>
+
+    <div class="scalar w3-container" style="padding:0px 20px 16px">
+      <fieldset>
+      <div class="tooltip">
+        <legend> <h5>Scalar </h5></legend>
+        <span class="tooltiptext">A “scalar” is an integer value that can be represented by 8 bits (for values from 0 to 255 or -128 to 127) or by 16 bits (for values from 0 to 65535 or -32768 to 32767).</span>
+        <!--  TODO: add explanation-->
+      </div>
+      <div>
+        <!--  TODO: add default values-->
+        Name: <br>
+        <input type="text" name="scalar_name" value="Intensity"><br>
+        Number of bits: <br>
+        <input list="numbits" name="numbits">
+        <datalist id="numbits">
+          <option value="8"></option>
+          <option value="16"></option>
+        </datalist><br>
+        Unit: <br>
+        <input type="text" name="" value="%"><br>
+        Minimum Value: <br>
+        <input type="number" name="" value="0"><br>
+        Maximum Vlaue: <br>
+        <input type="number" name="" value="100"><br>
+        Step size: <br>
+        <input type="number" name="" value="10"><br>
+      </div>
+      <button class="add_form_field_access">Add another scalar value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+      </fieldset>
+    </div>
 
 
+    <div class="enum w3-container" style="padding:0px 20px 16px">
+      <fieldset>
+      <div class="tooltip">
+        <legend> <h5>Enumerated </h5></legend>
+        <span class="tooltiptext">An “enumerated” value type corresponds to pairs "name, value" (value is represented by an 8 bit quantity).</span>
+        <!--  TODO: add explanation-->
+      </div>
+      <div>
+        <!--  TODO: add default values-->
+        Name: <br>
+        <input type="text" name="" value="state">
+        <button class="add_form_field_access">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
+        <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+        Name: <br>
+        <input type="text" name="" value="off"><br>
+        Value: <br>
+        <input type="number" name="" value="0"><br>
+
+      </div>
+      <button class="add_form_field_access">Add another enumerated value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+      </fieldset>
+    </div>
+
+    <div class="array w3-container" style="padding:0px 20px 16px">
+      <fieldset>
+      <div class="tooltip">
+        <legend> <h5>Array </h5></legend>
+        <span class="tooltiptext">Array of bytes, usually used in cases where 16 bits are not enough.</span>
+        <!--  TODO: add explanation-->
+      </div>
+      <div>
+        <!--  TODO: add default values-->
+        Name: <br>
+        <input type="text" name="" value="Power consumption"><br>
+        Maximum length: <br>
+        <input type="number" name="" value="99999.99"><br>
+      </div>
+      <button class="add_form_field_access">Add another array value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+      </fieldset>
+    </div>
+</fieldset>
 
 
+<div class="device_types w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Device types:</h4> </legend>
+    <div>
+    <!--  TODO: add default values-->
+    Name: <br>
+    <input type="text" name="" value="Temperature Sensor"><br>
+    Description: <br>
+    <input type="text" name="" value=""><br>
+    Property name: <br>
+    <input type="text" name="" value="Temperature">
+    <button class="add_form_field_access">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up --> <br>
+    Access Mode: <br>
+    <input list="access_modes" name="access_modes">
+    <datalist id="access_modes">
+      <option value="Read and Write (RW)"></option>
+      <option value="Read Only (RO)"></option>
+      <option value="Write Only (WO)"></option>
+    </datalist><br>
+    <!-- TODO: save drop-down as Rw/Ro/wo  -->
+    Value Type: <br>
+    <input list="value_types" name="value_types">
+    <datalist id="value_types">
+      <option value="Scalar"></option>
+      <option value="Enumerated"></option>
+      <option value="Array"></option>
+    </datalist><br>
+    Referance to value type: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist>
+    <!-- TODO: drop-down doesn't work -->
+
+  </div>
+  <button class="add_form_field_access">Add another device type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  </fieldset>
+</div>
 
 
+<div class="device_list w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Device list:</h4> </legend>
+    <div>
+    <!--  TODO: add default values-->
+    Name: <br>
+    <input type="text" name="" value=""><br>
+    Device type: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Address:<br>
+    <input type="text" name="" value=""><br>
+    Division: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Access level: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    User Blocked: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+  </div>
+  <button class="add_form_field_access">Add another device &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+</fieldset>
+</div>
+
+<div class="scenario w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Scenario list:</h4> </legend>
+  <div>
+    <!--  TODO: add default values-->
+    Scenario Name: <br>
+    <input type="text" name="" value=""><br>
+    Action list:
+    <button class="add_form_field_access">Add another action to this scenario &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+    Device: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Property: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Value: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+  </div>
+  <button class="add_form_field_access">Add another scenario &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  </fieldset>
+</div>
+
+<div class="fav w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Favourites list:</h4> </legend>
+  <div>
+    <!--  TODO: add default values-->
+    User name: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Device or division list:
+    <button class="add_form_field_access">Add another device or division to this user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+    Device: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+    Devision: <br>
+    <input list="access_levels" name="user-access-level">
+    <datalist id="access_levels"></datalist><br>
+    <!-- TODO: drop-down doesn't work -->
+  </div>
+  <button class="add_form_field_access">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  </fieldset>
+</div>
 
 
-
-
+<header class="w3-container w3-yellow w3-center" style="padding:50px">
+  <!-- <h1>You're done!</h1> -->
+  <p class="w3-medium">Check all your details and if you're done, press the button to create and download the XML file with all your given details.</p>
+  <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Create and Download XML file</button>
+</header>
 
 
 
 
   <!-- Footer -->
   <!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity"> -->
-  <footer class="w3-container w3-black w3-center w3-opacity w3-padding-64">
+  <footer class="w3-container w3-black w3-center w3-opacity w3-padding-32">
     <!-- <div class="w3-xlarge w3-padding-32">
       <i class="fa fa-facebook-official w3-hover-opacity"></i>
       <i class="fa fa-instagram w3-hover-opacity"></i>
