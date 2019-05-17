@@ -22,7 +22,7 @@
   <style>
   body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   .w3-bar,h1,button {font-family: "Montserrat", sans-serif}
-  .fa-anchor,.fa-coffee {font-size:200px}
+  .fa-book,.fa-search {font-size:200px}
   </style>
 <body>
 
@@ -60,7 +60,7 @@
   <div class="w3-content">
     <div class="w3-twothird">
       <h1>DomoBus Specification Language Documnetation:</h1>
-      <h5 class="w3-padding-32">
+      <h5 class="w3-padding-32 w3-justify">
         This document describes an XML-based specification language for DomoBus systems. The specification language can be divided into two parts:
 - One that defines generic property types and, based on them, defines also generic device types; and
 - A second part that defines a specific system and the physical structure of a home or building.
@@ -68,14 +68,14 @@ All the information is stored on a single file to simplify access and management
 The current specification is quite complete and functional. In some cases in can even include details that may not be required by some applications (in which cases they can just ignore those details).
 This specification is always open to improvements and, so, it can be expanded in the future. Because of this, every application that is designed to process a DomoBus specification must be prepared to ignore tags and attributes that are unknown or that are not relevant to the application. This can be done easily, due to the usage of XML, and that was one of the reasons why the “eXtended Markup Language” was chosen for the DomoBus system specification.
 This document assumes the reader is familiar with the generic model of a home automation device used in DomoBus.</h5>
-
+<!--
       <p class="w3-text-grey">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint
         occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat.</p>
+        laboris nisi ut aliquip ex ea commodo consequat.</p> -->
     </div>
 
     <div class="w3-third w3-center">
-      <i class="fa fa-book w3-padding-64 w3-text-red"></i>
+      <i class="fa fa-book w3-padding-64 w3-text-yellow"></i>
     </div>
   </div>
 </div>
@@ -83,23 +83,21 @@ This document assumes the reader is familiar with the generic model of a home au
 <!-- Second Grid -->
 <div class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
-    <!-- <div class="w3-third w3-center">
-      <i class="fa fa-coffee w3-padding-64 w3-text-red w3-margin-right"></i>
-    </div> -->
+    <div class="w3-third w3-center">
+      <i class="fa fa-search w3-padding-64 w3-text-yellow w3-margin-right"></i>
+    </div>
 
     <div class="w3-twothird">
       <h1>Definition of Generic Device Types</h1>
-      <h5 class="w3-padding-32">The specification of a DomoBus system includes the definition of generic “Device Types”, which can be reused in different systems (just by copying their definition).
+      <h5 class="w3-padding-32 w3-justify">The specification of a DomoBus system includes the definition of generic “Device Types”, which can be reused in different systems (just by copying their definition).
 The definition of a device type consists, essentially, in listing a set of properties that characterize the device. Each property is based on one of three predefined value types – scalar, enumerated and array. These three types of values are the only thing that is fixed and must be built in the applications.
 Current specification allows also defining conversions that can be applied to values. And device types may be organized into classes, as a means to structure the information.</h5>
 
-      <p class="w3-text-grey">The value of a property can be of three different types:
-• ScalarValueType – A “scalar” is an integer value that can be represent by 8 bits (for values from 0 to 255) or by 16 bits (for values from 0 to 65535).
-• EnumValueType – An “enumerated” correspond to pairs "name, value" (value is represented by an 8 bit quantity).
-• ArrayValueType – Array of bytes.
-Scalars can have a minimum and a maximum value, and may define a step value for
-increments and decrements. They may also identify units for the quantity represented.
-</p>
+      <p class="w3-text-grey w3-justify">The value of a property can be of three different types: Firstly, ScalarValueType –
+        A “scalar” is an integer value that can be represent by 8 bits (for values from 0 to 255) or by 16 bits (for values from 0 to 65535).
+        Secondly, the EnumValueType – An “enumerated” correspond to pairs "name, value" (value is represented by an 8 bit quantity) and finally,
+        ArrayValueType – Array of bytes. Scalars can have a minimum and a maximum value, and may define a step value forincrements and decrements.
+        They may also identify units for the quantity represented.</p>
     </div>
   </div>
 </div>

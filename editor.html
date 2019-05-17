@@ -26,11 +26,7 @@
     }
   }
 
-
-
-
-
-
+  window.file = '';
   </script>
 <body>
 
@@ -57,52 +53,68 @@
   <!-- Header -->
   <header class="w3-container w3-yellow w3-center" style="padding:128px 16px 60px">
     <h1>DomoBus Specification Editor</h1>
-    <p class="w3-medium">Do you have an XML file already? Want us to read it so you can edit it here? </p>
+    <p>Do you have an XML file already? Want us to read it so you can edit it here? </p>
     <p>Then just upload your file here:</p>
     <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Upload XML file</button>
   </header>
 
   <header class="w3-container w3-center" style="padding:20px 16px">
     <h1>Let's start writing/ editing the DomoBus Specification!</h1>
-    <!-- <p class="w3-medium">Check all your details and if you're done, press the button to create and download the XML file with all your given details.</p> -->
+    <!-- <p class="w3-medium">Please press the Submit button after you're done with each section.</p> -->
     <!-- <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Create and Download XML file</button> -->
   </header>
 
 <!-- <h2>Let's start writing/ editing the DomoBus Specification!</h2> -->
+
+
 
 <!-- <h3>Domo Bus System Details: </h3> -->
   <form class="w3-container" style="padding:0px 20px 16px">
   <fieldset>
     <legend> <h4>DomoBus System Details: </h4></legend>
     ID:<br>
-    <input type="number" name="domobus-sys-id" value="123" required=true><br>
+    <input type="number" name="domobus-sys-id" id="domobus-sys-id" value="123" required=true><br>
     Name:<br>
-    <input type="text" name="domobus-sys-name" value="Example System" required=true><br>
+    <input type="text" id="domobus-sys-name" value="Example System" required=true><br>
     Version:<br>
-    <input type="number" name="domobus-sys-version" value="1.0" required=true><br>
+    <input type="number" id="domobus-sys-version" value="1.0" required=true><br>
     Date:<br>
-    <input type="date" name="domobus-sys-date" value="20-04-2019" required=true><br>
+    <input type="date" id="domobus-sys-date"><br>
+    <!-- <input type="button" value="Submit" onclick="addToFile_ds()" class="w3-button w3-yellow w3-padding-large w3-small w3-margin-top"/><br> -->
   </fieldset>
 </form>
+
+<!-- <script type="text/javascript">
+  function addToFile_ds(){
+    window.file += '<DomoBusSystem ID="'+ String(document.getElementById('domobus-sys-id').value) + '" Name="' + String(document.getElementById('domobus-sys-name').value) +'" Version="' + String(document.getElementById('domobus-sys-version').value) +'" Date="' + String(document.getElementById('domobus-sys-date').value) +'">';
+    window.file += '<House ID="'+ String(document.getElementById('house-structure-id').value) + '" Name="' + String(document.getElementById('house-name').value) +'" Address="' + String(document.getElementById('house-address').value) +'" Phone="' + String(document.getElementById('house-phone').value) +'">';
+
+  }
+</script> -->
 
 <form class="w3-container" style="padding:0px 20px 16px">
 <fieldset>
   <legend> <h4>House Details:</h4> </legend>
   ID:<br>
-  <input type="number" name="house-structure-id" value="98" required=true><br>
+  <input type="number" id="house-structure-id" value="98" required=true><br>
   Name:<br>
-  <input type="text" name="house-name" value="Ferdous's home" required=true><br>
+  <input type="text" id="house-name" value="Ferdous's home" required=true><br>
   Address:<br>
-  <input type="text" name="house-address" value="Street name, house number" required=true size="50"><br>
+  <input type="text" id="house-address" value="Street name, house number" required=true size="50"><br>
   Phone:<br>
-  <input type="tel" name="house-phone" value="0123456789" required=true><br>
+  <input type="tel" id="house-phone" value="0123456789" required=true><br>
+  <!-- <input type="button" value="Submit" onclick="addToFile_hs()" class="w3-button w3-yellow w3-padding-large w3-small w3-margin-top"/><br> -->
 </fieldset>
 </form>
 
-
+<!-- <script type="text/javascript">
+  function addToFile_hs(){
+    // window.file += '<House ID="'+ String(document.getElementById('house-structure-id').value) + '" Name="' + String(document.getElementById('house-name').value) +'" Address="' + String(document.getElementById('house-address').value) +'" Phone="' + String(document.getElementById('house-phone').value) +'">';
+  }
+</script> -->
 
 <style>
-.add_form_field_floor,.add_form_field_access
+.add_form_field_floor,.add_form_field_access, .add_form_field_division
 {
     background-color: #1c97f3;
     border: none;
@@ -117,7 +129,7 @@
 	border:1px solid #186dad;
 
 }
-.delete_access, .delete_floor{
+.delete_access, .delete_floor, .delete_division{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -134,21 +146,24 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script>
+
+window.floornames = new Array();
 $(document).ready(function() {
     var max_fields      = 100;
     var wrapper         = $(".floor");
     var add_button      = $(".add_form_field_floor");
 
-    var x = 1;
+    window.floorx = 0;
     $(add_button).click(function(e){
         e.preventDefault();
-        if(x < max_fields){
-            x++;
-            var floorName = "floor-name" + x;
-            var floorHeight = "floor-height" + x;
-            var divisionName = "division-name" + x;
+        window.floornames[0] = String(document.getElementById('floor-name').value);
+        if(window.floorx < max_fields){
+            var floorName = "floor-name" + window.floorx;
+            var floorHeight = "floor-height" + window.floorx;
+            // var divisionName = "division-name" + window.floorx;
 
-            $(wrapper).append('<div>Floor name: <br><input type="text" name="'+ floorName +'"><br>Height Order:<br><input type="number" name="'+floorHeight+'"><br>Division Name on this floor:<br><input type="text" name="'+divisionName+'"><a href="#" class="delete_floor">Delete this floor and division</a></div>'); //add input box
+            $(wrapper).append('<div>Floor name: <br><input type="text" id="'+ floorName +'"><br>Height Order:<br><input type="number" id="'+floorHeight+'"><a href="#" class="delete_floor">Delete this floor</a></div>'); //add input box
+            window.floorx++;
         }
 		else
 		{
@@ -157,26 +172,43 @@ $(document).ready(function() {
     });
 
     $(wrapper).on("click",".delete_floor", function(e){
-        e.preventDefault(); $(this).parent('div').remove(); x--;
+        e.preventDefault(); $(this).parent('div').remove();
+        window.floorx--;
+        // window.floornames.splice(window.floorx,1);
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".division");
+    var add_button      = $(".add_form_field_division");
+
+    window.divx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.divx < max_fields){
+            // var floorName = "floor-name" + window.floorx;
+            // var floorHeight = "floor-height" + window.floorx;
+            var fn = "fn" + window.divx;
+            var divisionName = "division-name" + window.divx;
+
+            $(wrapper).append('<div>Division name: <br><input type="text" id="'+divisionName+'"><br>On floor: <br><input list="floor-names" id="'+fn+'"><datalist id="floor-names"></datalist><a href="#" class="delete_floor">Delete this floor</a></div>'); //add input box
+            window.divx++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_division", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.divx--;
     })
 });
 
 
-// function myFunction2() {
-//   // var x = document.getElementById("accesslevel");
-//   // var text = "";
-//   // var a = document.getElementById('access_name');
-//
-//   var accessnames = new Array();
-//   accessnames[0] = String(document.getElementById('access_name').value);
-//   // accessnames[0] = String(a.value);
-//
-//   // var i;
-//   // for (i = 0; i < x.length ;i++) {
-//   //   text += x.elements[i].value + "<br>";
-//   // }
-//   document.getElementById("demo").innerHTML = accessnames;
-// }
+
 
 $(document).ready(function() {
     var max_fields      = 100;
@@ -185,11 +217,6 @@ $(document).ready(function() {
 
     window.accessnames = new Array();
     window.accessnames[0] = String(document.getElementById('access_name').value);
-    // var a = document.getElementById('access_name');
-    // accessnames[0] = String(a.value);
-
-    // mycars[0]='Herr';
-    // mycars[1]='Frau';
 
     var x = 0;
     $(add_button).click(function(e){
@@ -221,23 +248,136 @@ $(document).ready(function() {
 //   options += '<option value="'+accessnames[i]+'" />';
 //
 // document.getElementById('access-levels').innerHTML = options;
+
+  function saveFloors(){
+    window.floornames[0] = String(document.getElementById('floor-name').value);
+    for (var i = 0; i < window.floorx; i++) {
+      window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
+    }
+
+    var list = document.getElementById('floor-names');
+
+    window.floornames.forEach(function(item){
+      var option = document.createElement('option');
+      option.value = item;
+      list.appendChild(option);
+    });
+  }
+  // TODO: fix the issue of when a floor is added, list updated and then a floor (not the last) is removed, and list updated again
+
+  window.floorRef = [];
+
+  function check(i)){
+    return i == String(document.getElementById('fn').value);
+  }
+
+  function saveDivs(){
+
+    // function check(String(document.getElementById('fn').value)){
+    //   return String(document.getElementById('fn').value);
+    // }
+    // if
+
+
+    // String(document.getElementById('fn').value) ==
+    for (var i = 0; i < window.divx; i++) {
+      var index = window.floornames.findIndex(check);
+
+    }
+
+    // TODO: figure out how to fucking get the index of the chosen floor, as that is the RefID of that floor (needed for XML creation)
+
+    // window.floorRef = document.getElementById("floor-names").selectedIndex;
+    // window.floornames[0] = String(document.getElementById('floor-name').value);
+    // for (var i = 0; i < window.floorx; i++) {
+    //   window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
+    // }
+    //
+    // var list = document.getElementById('floor-names');
+    //
+    // window.floornames.forEach(function(item){
+    //   var option = document.createElement('option');
+    //   option.value = item;
+    //   list.appendChild(option);
+    // });
+  }
 </script>
 
 
 <div class="floor w3-container" style="padding:0px 20px 16px">
   <fieldset>
-    <!-- <div><input type="text" name="mytext[]"></div> -->
+    <legend> <h4>Floor list:</h4> </legend>
     <div>
     Floor name: <br>
-    <input type="text" name="floor-name" value="Ground Floor"><br>
+    <input type="text" id="floor-name" value="Ground Floor"><br>
     Height Order: <br>
-    <input type="number" name="floor-height" value="0"><br>
-    Division Name on this floor: <br>
-    <input type="text" name="division-name" value="Living Hall">
+    <input type="number" id="floor-height" value="0"><br>
+    <!-- Division Name on this floor: <br>
+    <input type="text" id="division-name" value="Living Hall"> -->
     </div>
-    <button class="add_form_field_floor">Add another floor or division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <button class="add_form_field_floor">Add another floor &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+
  </fieldset>
 </div>
+
+<div class="w3-container" style="padding:0px 20px 16px">
+  <input type="button" value="Save floor list" onclick="saveFloors()" class="w3-button w3-yellow w3-padding-large w3-medium w3-margin-top"><br>
+</div>
+
+
+
+
+<div class="division w3-container" style="padding:0px 20px 16px">
+  <fieldset>
+    <legend> <h4>Division list:</h4> </legend>
+    <div>
+    Division name: <br>
+    <input type="text" id="division-name" value="Living Hall"><br>
+    On floor: <br>
+    <input list="floor-names" id="fn">
+    <datalist id="floor-names"></datalist>
+    </div>
+    <button class="add_form_field_division">Add another division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+ </fieldset>
+</div>
+
+<div class="w3-container" style="padding:0px 20px 16px">
+  <input type="button" value="Save division list" onclick="saveDivs()" class="w3-button w3-yellow w3-padding-large w3-medium w3-margin-top"><br>
+</div>
+
+<!-- <script>
+  var list = document.getElementById('floor-names');
+
+  window.floornames.forEach(function(item){
+    var option = document.createElement('option');
+    option.value = item;
+    list.appendChild(option);
+  });
+
+  function myFunction2() {
+    // var x = document.getElementById("accesslevel");
+    // var text = "";
+    // var a = document.getElementById('access_name');
+
+    // var accessnames = new Array();
+    // accessnames[0] = String(document.getElementById('access_name').value);
+    // accessnames[0] = String(a.value);
+
+    // var i;
+    // for (i = 0; i < x.length ;i++) {
+    //   text += x.elements[i].value + "<br>";
+    // }
+    document.getElementById("demo").innerHTML = window.floornames;
+  }
+</script> -->
+
+
+<!-- <button onclick="myFunction2()">Try it</button>
+
+<p id="demo"></p> -->
+
+
+
 
 <form class="accessLevel w3-container" style="padding:0px 20px 16px" id="accesslevel">
   <fieldset>
@@ -252,9 +392,6 @@ $(document).ready(function() {
   </fieldset>
 </form>
 
-<!-- <button onclick="myFunction2()">Try it</button>
-
-<p id="demo"></p> -->
 
 <div class="user w3-container" style="padding:0px 20px 16px" >
   <fieldset>
@@ -266,7 +403,11 @@ $(document).ready(function() {
     <input type="password" name="user-password"><br>
     Access Level: <br>
     <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist>
+    <datalist id="access_levels">
+      <option value="Guest"></option>
+      <option value="Children"></option>
+      <option value="Admin"></option>
+    </datalist>
     <!-- TODO: drop-down doesn't work -->
     <script>
     var list = document.getElementById('access_levels');
@@ -603,10 +744,72 @@ mycars.forEach(function(item){
 </div>
 
 
+
+<!-- <script type="text/javascript">
+  window.file = window.file + '</DomoBusSystem>';
+</script> -->
+
+
+<script type="text/javascript">
+
+  function download() {
+    // domobus
+    window.file += '<DomoBusSystem ID="'+ String(document.getElementById('domobus-sys-id').value) + '" Name="' + String(document.getElementById('domobus-sys-name').value) +'" Version="' + String(document.getElementById('domobus-sys-version').value) +'" Date="' + String(document.getElementById('domobus-sys-date').value) +'"> \n';
+// house structure
+    window.file += '<House ID="'+ String(document.getElementById('house-structure-id').value) + '" Name="' + String(document.getElementById('house-name').value) +'" Address="' + String(document.getElementById('house-address').value) +'" Phone="' + String(document.getElementById('house-phone').value) +'"> \n';
+// floor
+    window.file += '  <FloorList> \n';
+    window.file += '    <Floor ID="1" Name="' + String(document.getElementById('floor-name').value) + '" HeightOrder="' + String(document.getElementById('floor-height').value) + '" /> \n';
+    var i;
+    for (i = 0; i < window.floorx ;i++) {
+      var id = i+2;
+      window.file += '    <Floor ID="'+ id +'" Name="' + String(document.getElementById('floor-name'+i).value) + '" HeightOrder="' + String(document.getElementById('floor-height'+i).value) + '" /> \n';
+    }
+    window.file += '  </FloorList> \n';
+// Division
+    window.file += '  <DivisionList> \n';
+    window.file += '    <Division ID="1" Name="' + String(document.getElementById('division-name').value) + '" RefFloor="'+  +'" /> \n';
+    for (i = 0; i < window.divx ;i++) {
+      var id = i+2;
+      window.file += '    <Division ID="'+id+'" Name="' + String(document.getElementById('division-name'+i).value) + '" RefFloor="'+  +'" /> \n';
+    }
+
+    window.file += '  </DivisionList> \n';
+    window.file += '</House> \n';
+
+
+    var filename = 'DomoBusSpec.xml';
+    var text = window.file + '</DomoBusSystem>';
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+</script>
+
+<!-- <form onsubmit="download(this['name'].value, this['text'].value)">
+  <input type="text" name="name" value="test.txt">
+  <textarea name="text"></textarea>
+  <input type="submit" value="Download">
+</form> -->
+
+
+
+
 <header class="w3-container w3-yellow w3-center" style="padding:50px">
   <!-- <h1>You're done!</h1> -->
   <p class="w3-medium">Check all your details and if you're done, press the button to create and download the XML file with all your given details.</p>
-  <button href="#" class="w3-button w3-black w3-padding-large w3-small w3-margin-top">Create and Download XML file</button>
+  <form onsubmit="download()">
+    <!-- <input type="text" name="name" value="test.txt"> -->
+    <!-- <textarea name="text"></textarea> -->
+    <button type="submit" class="w3-button w3-black w3-padding-large w3-small w3-margin-top"><i class="fa fa-download"></i> Create and Download XML file</button>
+  </form>
 </header>
 
 
