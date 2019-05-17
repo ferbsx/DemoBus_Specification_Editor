@@ -267,40 +267,40 @@ $(document).ready(function() {
 
   window.floorRef = [];
 
-  function check(i)){
-    return i == String(document.getElementById('fn').value);
-  }
-
-  function saveDivs(){
-
-    // function check(String(document.getElementById('fn').value)){
-    //   return String(document.getElementById('fn').value);
-    // }
-    // if
-
-
-    // String(document.getElementById('fn').value) ==
-    for (var i = 0; i < window.divx; i++) {
-      var index = window.floornames.findIndex(check);
-
-    }
-
-    // TODO: figure out how to fucking get the index of the chosen floor, as that is the RefID of that floor (needed for XML creation)
-
-    // window.floorRef = document.getElementById("floor-names").selectedIndex;
-    // window.floornames[0] = String(document.getElementById('floor-name').value);
-    // for (var i = 0; i < window.floorx; i++) {
-    //   window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
-    // }
-    //
-    // var list = document.getElementById('floor-names');
-    //
-    // window.floornames.forEach(function(item){
-    //   var option = document.createElement('option');
-    //   option.value = item;
-    //   list.appendChild(option);
-    // });
-  }
+  // function check(i)){
+  //   return i == String(document.getElementById('fn').value);
+  // }
+  //
+  // function saveDivs(){
+  //
+  //   // function check(String(document.getElementById('fn').value)){
+  //   //   return String(document.getElementById('fn').value);
+  //   // }
+  //   // if
+  //
+  //
+  //   // String(document.getElementById('fn').value) ==
+  //   for (var i = 0; i < window.divx; i++) {
+  //     var index = window.floornames.findIndex(check);
+  //
+  //   }
+  //
+  //   // TODO: figure out how to fucking get the index of the chosen floor, as that is the RefID of that floor (needed for XML creation)
+  //
+  //   // window.floorRef = document.getElementById("floor-names").selectedIndex;
+  //   // window.floornames[0] = String(document.getElementById('floor-name').value);
+  //   // for (var i = 0; i < window.floorx; i++) {
+  //   //   window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
+  //   // }
+  //   //
+  //   // var list = document.getElementById('floor-names');
+  //   //
+  //   // window.floornames.forEach(function(item){
+  //   //   var option = document.createElement('option');
+  //   //   option.value = item;
+  //   //   list.appendChild(option);
+  //   // });
+  // }
 </script>
 
 
@@ -391,6 +391,11 @@ $(document).ready(function() {
     <button class="add_form_field_access">Add another access level &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
   </fieldset>
 </form>
+
+<div class="w3-container" style="padding:0px 20px 16px">
+  <input type="button" value="Save access list" onclick="saveAccess()" class="w3-button w3-yellow w3-padding-large w3-medium w3-margin-top"><br>
+</div>
+<!-- TODO: this button be fake, please make it work -->
 
 
 <div class="user w3-container" style="padding:0px 20px 16px" >
