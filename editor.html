@@ -33,7 +33,7 @@
   <!-- Navbar -->
   <div class="w3-top">
     <div class="w3-bar w3-yellow w3-card w3-left-align w3-large">
-      <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-yellow" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
       <a href="./index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
       <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Editor</a>
       <a href="./domobus.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">More about DemoBus</a>
@@ -114,7 +114,7 @@
 </script> -->
 
 <style>
-.add_form_field_floor,.add_form_field_access, .add_form_field_division{
+.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service{
     background-color: #1c97f3;
     border: none;
     color: white;
@@ -128,7 +128,7 @@
 	border:1px solid #186dad;
 
 }
-.delete_access, .delete_floor, .delete_division{
+.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -173,7 +173,7 @@ $(document).ready(function() {
     $(wrapper).on("click",".delete_floor", function(e){
         e.preventDefault(); $(this).parent('div').remove();
         window.floorx--;
-        // window.floornames.splice(window.floorx,1);
+        window.floornames.splice(window.floorx,1); //TODO:does this work?
     })
 });
 
@@ -194,7 +194,7 @@ function saveFloors(){
     // option.value = item;
     // list.appendChild(option);
   });
-}
+};
 // TODO: fix the issue of when a floor is added, list updated and then a floor (not the last) is removed, and list updated again
 
 
@@ -234,25 +234,23 @@ $(document).ready(function() {
 });
 
 
-
+window.accesslevels = new Array();
 $(document).ready(function() {
     var max_fields      = 100;
     var wrapper         = $(".accessLevel");
     var add_button      = $(".add_form_field_access");
 
-    window.accessnames = new Array();
-    window.accessnames[0] = String(document.getElementById('access_name').value);
-
-    var x = 0;
+    window.acsx = 0;
     $(add_button).click(function(e){
         e.preventDefault();
-        if(x < max_fields){
-            x++;
-            var accessName = "access_name" + x;
-            var accessLevel = "access_level" + x;
+        window.accesslevels[0] = String(document.getElementById('access_level').value);
+        if(window.acsx < max_fields){
+            var accessName = "access_name" + window.acsx;
+            var accessLevel = "access_level" + window.acsx;
 
             $(wrapper).append('<div>Name: <br><input type="text" id="'+accessName+'" value="Admin"><br>Access level:<br><input type="number" id="'+accessLevel+'" value="9"><a href="#" class="delete_access">Delete this access level</a></div>'); //add input box
-            window.accessnames[x] = String(document.getElementById(accessName).value);
+            window.accesslevels[window.acsx] = String(document.getElementById(accessLevel).value);
+            window.acsx++;
         }
 		else
 		{
@@ -262,10 +260,25 @@ $(document).ready(function() {
 
     $(wrapper).on("click",".delete_access", function(e){
         e.preventDefault(); $(this).parent('div').remove();
-        x--;
-        window.accessnames.splice(x,1);
+        window.acsx--;
+        window.accesslevels.splice(window.acsx,1);
     })
 });
+
+function saveAccess(){
+  var select = document.getElementById('access_levels');
+  select.options.length = 0;
+  window.accesslevels[0] = String(document.getElementById('access_level').value);
+  for (var i = 0; i < window.acsx; i++) {
+    window.accesslevels[i+1] = String(document.getElementById('access_level' + i).value);
+  }
+
+  select = document.getElementById('access_levels');
+
+  window.accesslevels.forEach(function(item){
+    select.options[select.options.length] = new Option(item);
+  });
+};
 
 // var options = '';
 //
@@ -274,8 +287,71 @@ $(document).ready(function() {
 //
 // document.getElementById('access-levels').innerHTML = options;
 
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".user");
+    var add_button      = $(".add_form_field_user");
+
+    window.userx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.userx < max_fields){
+            var userName = "user_name" + window.userx;
+            var userPass = "user_password" + window.userx;
+            var s = "access_levels" + window.userx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+userName+'"><br>Password: <br><input type="password" id="'+userPass+'"><br>Access Level: <br><select id="'+s+'"></select><a href="#" class="delete_user">Delete this user</a></div>'); //add input box
+
+            window.userx++;
+            var sel = document.getElementById(s);
+
+            window.accesslevels.forEach(function(item){
+              sel.options[sel.options.length] = new Option(item);
+            });
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_user", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.userx--;
+    })
+});
 
 
+// window.floornames = new Array();
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".service");
+    var add_button      = $(".add_form_field_service");
+
+    window.servx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        // window.floornames[0] = String(document.getElementById('floor-name').value);
+        if(window.servx < max_fields){
+            var servName = "service_name" + window.servx;
+            // var floorHeight = "floor-height" + window.floorx;
+            // var divisionName = "division-name" + window.floorx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+servName+'"><a href="#" class="delete_service">Delete this service</a></div>'); //add input box
+            window.servx++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_service", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.servx--;
+        // window.floornames.splice(window.floorx,1); //TODO:does this work?
+    })
+});
 
 </script>
 
@@ -308,16 +384,16 @@ $(document).ready(function() {
     Division name: <br>
     <input type="text" id="division-name" value="Living Hall"><br>
     On floor: <br>
-    <!-- <input list="floor-names" id="fn"> -->
     <select id="floor-names"></select>
     </div>
     <button class="add_form_field_division">Add another division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
- </fieldset>
+  </fieldset>
 </div>
 
 <div class="w3-container" style="padding:0px 20px 16px">
   <input type="button" value="Save division list" onclick="saveDivs()" class="w3-button w3-yellow w3-padding-large w3-medium w3-margin-top"><br>
 </div>
+<!-- TODO: this button be fake, please make it work -->
 
 
 <!-- <script>
@@ -352,8 +428,6 @@ $(document).ready(function() {
 <p id="demo"></p> -->
 
 
-
-
 <form class="accessLevel w3-container" style="padding:0px 20px 16px" id="accesslevel">
   <fieldset>
     <legend> <h4>Access level list:</h4> </legend>
@@ -372,15 +446,15 @@ $(document).ready(function() {
 </div>
 <!-- TODO: this button be fake, please make it work -->
 
-<script>
+<!-- <script>
   function myFunction2() {
-    document.getElementById("demo").innerHTML = window.accessnames;
+    document.getElementById("demo").innerHTML = window.acsx;
   }
 </script>
 
 
 <button onclick="myFunction2()">Print ish</button>
-<p id="demo"></p>
+<p id="demo"></p> -->
 
 
 
@@ -389,30 +463,13 @@ $(document).ready(function() {
     <legend> <h4>Users list:</h4> </legend>
     <div>
     Name: <br>
-    <input type="text" name="user-name" value="John"><br>
+    <input type="text" id="user_name" value="John"><br>
     Password: <br>
-    <input type="password" name="user-password"><br>
+    <input type="password" id="user_password"><br>
     Access Level: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels">
-      <option value="Guest"></option>
-      <option value="Children"></option>
-      <option value="Admin"></option>
-    </datalist>
-    <!-- TODO: drop-down doesn't work -->
-    <script>
-    var list = document.getElementById('access_levels');
-
-    window.accessnames.forEach(function(item){
-       var option = document.createElement('option');
-       option.value = item;
-       list.appendChild(option);
-    });
-    </script>
-
+    <select id="access_levels"></select>
     </div>
-    <button class="add_form_field_access">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+    <button class="add_form_field_user">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
   </fieldset>
 </div>
 
@@ -460,8 +517,6 @@ $(document).ready(function() {
 <p id="demo2"></p> -->
 
 
-
-
 <!-- <input name="car" list="anrede" />
 <datalist id="anrede"></datalist>
 
@@ -482,9 +537,9 @@ mycars.forEach(function(item){
     <legend> <h4>Service list:</h4> </legend>
     <div>
     Name: <br>
-    <input type="text" name="service-name" value="Lighting">
+    <input type="text" id="service_name" value="Lighting">
   </div>
-  <button class="add_form_field_access">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+  <button class="add_form_field_service">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
   <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
 </fieldset>
 </div>
@@ -607,11 +662,11 @@ mycars.forEach(function(item){
       </fieldset>
     </div>
 </fieldset>
-
+</div>
 
 <div class="device_types w3-container" style="padding:0px 20px 16px">
   <fieldset>
-    <legend> <h4>Device types:</h4> </legend>
+    <legend> <h4>Device Types:</h4> </legend>
     <div>
     <!--  TODO: add default values-->
     Name: <br>
@@ -779,16 +834,37 @@ mycars.forEach(function(item){
 
     window.file += '<AccessLevelList> \n';
     window.file += '  <AccessLevel Level=“'+ String(document.getElementById('access_level').value) +'" Name=“'+ String(document.getElementById('access_name').value) +'" /> \n';
-    for (i = 0; i < window.accessnames ;i++) {
+    for (i = 0; i < window.acsx ;i++) {
       window.file += '  <AccessLevel Level=“'+ String(document.getElementById('access_level'+i).value) +'" Name=“'+ String(document.getElementById('access_name'+i).value) +'" /> \n';
     }
     window.file += '</AccessLevelList> \n';
 
-
-
     window.file += '<UserList> \n';
-
+    x = document.getElementById("access_levels").selectedIndex;
+    y = document.getElementById("access_levels").options;
+    // f = y[x].text;
+    window.file += '  User ID="1" Name= "'+ String(document.getElementById('user_name').value) +'" Password="'+ String(document.getElementById('user_password').value) +'" AccessLevel="'+ String(y[x].text) +'" />\n';
+    for (i = 0; i < window.userx ;i++) {
+      var id = i+2;
+      x = document.getElementById("access_levels"+i).selectedIndex;
+      y = document.getElementById("access_levels"+i).options;
+      // f = y[x].text;
+      window.file += '  User ID="'+ id +'" Name= "'+ String(document.getElementById('user_name'+i).value) +'" Password="'+ String(document.getElementById('user_password'+i).value) +'" AccessLevel="'+ String(y[x].text) +'" />\n';
+    }
     window.file += '</UserList> \n';
+
+    window.file += '<ServiceList> \n';
+    window.file += '  <Service ID=“1" Name="'+ String(document.getElementById('service_name').value) +'" /> \n';
+    for (i = 0; i < window.servx ;i++) {
+      var id = i+2;
+      window.file += '  <Service ID=“'+ id +'" Name="'+ String(document.getElementById('service_name'+i).value) +'" /> \n';
+    }
+    window.file += '</ServiceList> \n';
+
+
+
+
+
 
 
     var filename = 'DomoBusSpec.xml';
