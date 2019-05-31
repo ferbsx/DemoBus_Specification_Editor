@@ -33,7 +33,7 @@
   <!-- Navbar -->
   <div class="w3-top">
     <div class="w3-bar w3-yellow w3-card w3-left-align w3-large">
-      <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-red" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+      <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-yellow" href="javascript:void(0);" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
       <a href="./index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Home</a>
       <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Editor</a>
       <a href="./domobus.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">More about DemoBus</a>
@@ -114,8 +114,7 @@
 </script> -->
 
 <style>
-.add_form_field_floor,.add_form_field_access, .add_form_field_division
-{
+.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service, .add_form_field_scalar, .add_form_field_enumeration, .add_form_field_enumValueType, .add_form_field_array, .add_form_field_devTypeProp, .add_form_field_devType, .add_form_field_device{
     background-color: #1c97f3;
     border: none;
     color: white;
@@ -129,7 +128,7 @@
 	border:1px solid #186dad;
 
 }
-.delete_access, .delete_floor, .delete_division{
+.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service, .delete_scalar, .delete_enumeration, .delete_enumValueType, .delete_array, .delete_devType, .delete_devTypeProp, .delete_device{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -174,9 +173,30 @@ $(document).ready(function() {
     $(wrapper).on("click",".delete_floor", function(e){
         e.preventDefault(); $(this).parent('div').remove();
         window.floorx--;
-        // window.floornames.splice(window.floorx,1);
+        window.floornames.splice(window.floorx,1); //TODO:does this work?
     })
 });
+
+
+function saveFloors(){
+  var select = document.getElementById('floor-names');
+  select.options.length = 0;
+  window.floornames[0] = String(document.getElementById('floor-name').value);
+  for (var i = 0; i < window.floorx; i++) {
+    window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
+  }
+
+  select = document.getElementById('floor-names');
+
+  window.floornames.forEach(function(item){
+    select.options[select.options.length] = new Option(item);
+    // var option = document.createElement('option');
+    // option.value = item;
+    // list.appendChild(option);
+  });
+};
+// TODO: fix the issue of when a floor is added, list updated and then a floor (not the last) is removed, and list updated again
+
 
 $(document).ready(function() {
     var max_fields      = 100;
@@ -191,9 +211,15 @@ $(document).ready(function() {
             // var floorHeight = "floor-height" + window.floorx;
             var fn = "fn" + window.divx;
             var divisionName = "division-name" + window.divx;
+            var s = "floor-names" + window.divx;
 
-            $(wrapper).append('<div>Division name: <br><input type="text" id="'+divisionName+'"><br>On floor: <br><input list="floor-names" id="'+fn+'"><datalist id="floor-names"></datalist><a href="#" class="delete_floor">Delete this floor</a></div>'); //add input box
+            $(wrapper).append('<div>Division name: <br><input type="text" id="'+divisionName+'"><br>On floor: <br><select id="'+s+'"></select><a href="#" class="delete_floor">Delete this floor</a></div>'); //add input box
             window.divx++;
+            var sel = document.getElementById(s);
+
+            window.floornames.forEach(function(item){
+              sel.options[sel.options.length] = new Option(item);
+            });
         }
 		else
 		{
@@ -208,26 +234,23 @@ $(document).ready(function() {
 });
 
 
-
-
+window.accesslevels = new Array();
 $(document).ready(function() {
     var max_fields      = 100;
     var wrapper         = $(".accessLevel");
     var add_button      = $(".add_form_field_access");
 
-    window.accessnames = new Array();
-    window.accessnames[0] = String(document.getElementById('access_name').value);
-
-    var x = 0;
+    window.acsx = 0;
     $(add_button).click(function(e){
         e.preventDefault();
-        if(x < max_fields){
-            x++;
-            var accessName = "access_name" + x;
-            var access_Level = "access-level" + x;
+        window.accesslevels[0] = String(document.getElementById('access_level').value);
+        if(window.acsx < max_fields){
+            var accessName = "access_name" + window.acsx;
+            var accessLevel = "access_level" + window.acsx;
 
-            $(wrapper).append('<div>Name: <br><input type="text" name="'+accessName+'" id="'+accessName+'" value="Admin"><br>Access level:<br><input type="number" name="'+access_Level+'" value="9"><a href="#" class="delete_access">Delete this access level</a></div>'); //add input box
-            window.accessnames[x] = String(document.getElementById(accessName).value);
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+accessName+'" value="Admin"><br>Access level:<br><input type="number" id="'+accessLevel+'" value="9"><a href="#" class="delete_access">Delete this access level</a></div>'); //add input box
+            window.accesslevels[window.acsx] = String(document.getElementById(accessLevel).value);
+            window.acsx++;
         }
 		else
 		{
@@ -237,10 +260,25 @@ $(document).ready(function() {
 
     $(wrapper).on("click",".delete_access", function(e){
         e.preventDefault(); $(this).parent('div').remove();
-        x--;
-        window.accessnames.splice(x,1);
+        window.acsx--;
+        window.accesslevels.splice(window.acsx,1);
     })
 });
+
+function saveAccess(){
+  var select = document.getElementById('access_levels');
+  select.options.length = 0;
+  window.accesslevels[0] = String(document.getElementById('access_level').value);
+  for (var i = 0; i < window.acsx; i++) {
+    window.accesslevels[i+1] = String(document.getElementById('access_level' + i).value);
+  }
+
+  select = document.getElementById('access_levels');
+
+  window.accesslevels.forEach(function(item){
+    select.options[select.options.length] = new Option(item);
+  });
+};
 
 // var options = '';
 //
@@ -249,58 +287,285 @@ $(document).ready(function() {
 //
 // document.getElementById('access-levels').innerHTML = options;
 
-  function saveFloors(){
-    window.floornames[0] = String(document.getElementById('floor-name').value);
-    for (var i = 0; i < window.floorx; i++) {
-      window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
-    }
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".user");
+    var add_button      = $(".add_form_field_user");
 
-    var list = document.getElementById('floor-names');
+    window.userx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.userx < max_fields){
+            var userName = "user_name" + window.userx;
+            var userPass = "user_password" + window.userx;
+            var s = "access_levels" + window.userx;
 
-    window.floornames.forEach(function(item){
-      var option = document.createElement('option');
-      option.value = item;
-      list.appendChild(option);
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+userName+'"><br>Password: <br><input type="password" id="'+userPass+'"><br>Access Level: <br><select id="'+s+'"></select><a href="#" class="delete_user">Delete this user</a></div>'); //add input box
+
+            window.userx++;
+            var sel = document.getElementById(s);
+
+            window.accesslevels.forEach(function(item){
+              sel.options[sel.options.length] = new Option(item);
+            });
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
     });
-  }
-  // TODO: fix the issue of when a floor is added, list updated and then a floor (not the last) is removed, and list updated again
 
-  window.floorRef = [];
+    $(wrapper).on("click",".delete_user", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.userx--;
+    })
+});
 
-  // function check(i)){
-  //   return i == String(document.getElementById('fn').value);
-  // }
-  //
-  // function saveDivs(){
-  //
-  //   // function check(String(document.getElementById('fn').value)){
-  //   //   return String(document.getElementById('fn').value);
-  //   // }
-  //   // if
-  //
-  //
-  //   // String(document.getElementById('fn').value) ==
-  //   for (var i = 0; i < window.divx; i++) {
-  //     var index = window.floornames.findIndex(check);
-  //
-  //   }
-  //
-  //   // TODO: figure out how to fucking get the index of the chosen floor, as that is the RefID of that floor (needed for XML creation)
-  //
-  //   // window.floorRef = document.getElementById("floor-names").selectedIndex;
-  //   // window.floornames[0] = String(document.getElementById('floor-name').value);
-  //   // for (var i = 0; i < window.floorx; i++) {
-  //   //   window.floornames[i+1] = String(document.getElementById('floor-name' + i).value);
-  //   // }
-  //   //
-  //   // var list = document.getElementById('floor-names');
-  //   //
-  //   // window.floornames.forEach(function(item){
-  //   //   var option = document.createElement('option');
-  //   //   option.value = item;
-  //   //   list.appendChild(option);
-  //   // });
-  // }
+
+// window.floornames = new Array();
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".service");
+    var add_button      = $(".add_form_field_service");
+
+    window.servx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        // window.floornames[0] = String(document.getElementById('floor-name').value);
+        if(window.servx < max_fields){
+            var servName = "service_name" + window.servx;
+            // var floorHeight = "floor-height" + window.floorx;
+            // var divisionName = "division-name" + window.floorx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+servName+'"><a href="#" class="delete_service">Delete this service</a></div>'); //add input box
+            window.servx++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_service", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.servx--;
+        // window.floornames.splice(window.floorx,1); //TODO:does this work?
+    })
+});
+
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".scalar");
+    var add_button      = $(".add_form_field_scalar");
+
+    window.scax = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.scax < max_fields){
+            var scName = "sc_name" + window.scax;
+            var numb = "numbits" + window.scax;
+            var scUnit = "sc_unit" + window.scax;
+            var scMin = "sc_min" + window.scax;
+            var scMax = "sc_max" + window.scax;
+            var scStep = "sc_step" + window.scax;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+scName+'"><br>Number of bits: <br><Select id="'+numb+'"><option>8</option><option>16</option></select><br>Unit: <br><input type="text" id="'+scUnit+'"><br>Minimum Value: <br><input type="number" id="'+scMin+'"><br>Maximum Vlaue: <br><input type="number" id="'+scMax+'"><br>Step size: <br><input type="number" id="'+scStep+'"><br><a href="#" class="delete_scalar">Delete this scalar type</a></div>'); //add input box
+            window.scax++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_scalar", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.scax--;
+    })
+});
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".enum");
+    var add_button      = $(".add_form_field_enumeration");
+
+    window.enumerationx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.enumerationx < max_fields){
+            window.enumerationx = window.enumerationx+ 3;
+            var enumedName = "enumed_name" + window.enumerationx;
+            var enumedValue = "enumed_value" + window.enumerationx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+enumedName+'"><br>Value: <br><input type="number" id="'+enumedValue+'"><a href="#" class="delete_enumeration">Delete this enumeration</a></div>'); //add input box
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_enumeration", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.enumerationx--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".enum");
+    var add_button      = $(".add_form_field_enumValueType");
+
+    window.enumvtx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.enumvtx < max_fields){
+            window.enumvtx = window.enumvtx+ 3;
+            // var enumedName = "enumed_name" + window.enumvtx;
+            // var enumedValue = "enumed_value" + window.enumvtx;
+// TODO: this doesn't really do what it's supposed to so fix it
+            $(wrapper).append('<div>Name: <br><input type="text" id="enum_name"><button class="add_form_field_enumeration">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br>Name: <br><input type="text" id="enumed_name1"><br>Value: <br><input type="number" id="enumed_value1"><br>Name: <br><input type="text" id="enumed_name2"><br>Value: <br><input type="number" id="enumed_value2"><a href="#" class="delete_enumValueType">Delete this enumerated value type </a></div>'); //add input box
+            // TODO: this produces an unfunctional button, fix it
+
+        }
+
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_enumValueType", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.enumvtx--;
+    })
+});
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".array");
+    var add_button      = $(".add_form_field_array");
+
+    window.arrx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.arrx < max_fields){
+            var arrName = "arr_name" + window.arrx;
+            var arrMax = "arr_max" + window.arrx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+arrName+'"><br>Maximum length: <br><input type="number" id="'+arrMax+'"><a href="#" class="delete_array">Delete this array value type</a></div>'); //add input box
+            window.arrx++;
+
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_array", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.arrx--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_types");
+    var add_button      = $(".add_form_field_devTypeProp");
+
+    window.devtypx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devtypx < max_fields){
+            var devName = "dev_prop_name" + window.devtypx;
+            var devAccess = "dev_access_modes" + window.devtypx;
+            var devValueType = "dev_value_types" + window.devtypx;
+            // var devV = "value_types" + window.devtypx; //TODO: do so this works
+
+            $(wrapper).append('<div>Property name:<br><input type="text" id="'+devName+'"><br>Access Mode: <br><select id="'+devAccess+'"><option>Read and Write (RW)</option><option>Read Only (RO)</option><option>Write Only (WO)</option></select><br>Value Type: <br><select id="'+devValueType+'"><option>Scalar</option><option>Enumerated</option><option>Array</option></select><br>Referance to value type: <br><select id="value_types"><option>Intensity</option><option>state</option><option>Power consumption</option></select><a href="#" class="delete_devTypeProp">Delete this property for the device type</a></div>'); //add input box
+            window.devtypx++;
+
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_devTypeProp", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devtypx--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_types");
+    var add_button      = $(".add_form_field_devType");
+
+    window.devx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devx < max_fields){
+            var devtName = "devt_name" + window.devx;
+            var devtDesc = "devt_desc" + window.devx;
+
+            var devName = "dev_prop_name" + window.devx + window.devtypx;
+            var devAccess = "dev_access_modes" + window.devx + window.devtypx;
+            var devValueType = "dev_value_types" + window.devx + window.devtypx; //TODO: think if this makes sense
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+devtName+'"><br>Description: <br><input type="text" id="'+devtDesc+'" value=" - "><button class="add_form_field_devTypeProp">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br>Property name:<br><input type="text" id="'+devName+'"><br>Access Mode: <br><select id="'+devAccess+'"><option>Read and Write (RW)</option><option>Read Only (RO)</option><option>Write Only (WO)</option></select><br>Value Type: <br><select id="'+devValueType+'"><option>Scalar</option><option>Enumerated</option><option>Array</option></select><br>Referance to value type: <br><select id="value_types"><option>Intensity</option><option>state</option><option>Power consumption</option></select><a href="#" class="delete_devType">Delete this device type</a></div>'); //add input box
+            window.devx++;
+            // TODO: this produces an unfunctional button, fix it
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_devType", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devx--;
+    })
+});
+
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_list");
+    var add_button      = $(".add_form_field_device");
+
+    window.devx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devx < max_fields){
+            var devlName = "devl_name" + window.devx;
+            var devlDev = "devl_dev" + window.devx;
+            var devlAdd = "devl_add" + window.devx;
+            var devlDiv = "devl_div" + window.devx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+devlName+'"><br>Device type: <br><input type="text" id="'+devlDev+'"><br>Address:<br><input type="number" id="'+devlAdd+'"><br>Division: <br><input type="text" id="'+devlDiv+'"><a href="#" class="delete_device">Delete this device type</a></div>'); //add input box
+            window.devx++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_device", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devx--;
+    })
+});
+
 </script>
 
 
@@ -325,8 +590,6 @@ $(document).ready(function() {
 </div>
 
 
-
-
 <div class="division w3-container" style="padding:0px 20px 16px">
   <fieldset>
     <legend> <h4>Division list:</h4> </legend>
@@ -334,25 +597,26 @@ $(document).ready(function() {
     Division name: <br>
     <input type="text" id="division-name" value="Living Hall"><br>
     On floor: <br>
-    <input list="floor-names" id="fn">
-    <datalist id="floor-names"></datalist>
+    <select id="floor-names"></select>
     </div>
     <button class="add_form_field_division">Add another division &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
- </fieldset>
+  </fieldset>
 </div>
 
 <div class="w3-container" style="padding:0px 20px 16px">
   <input type="button" value="Save division list" onclick="saveDivs()" class="w3-button w3-yellow w3-padding-large w3-medium w3-margin-top"><br>
 </div>
+<!-- TODO: this button be fake, please make it work -->
+
 
 <!-- <script>
-  var list = document.getElementById('floor-names');
-
-  window.floornames.forEach(function(item){
-    var option = document.createElement('option');
-    option.value = item;
-    list.appendChild(option);
-  });
+  // var list = document.getElementById('floor-names');
+  //
+  // window.floornames.forEach(function(item){
+  //   var option = document.createElement('option');
+  //   option.value = item;
+  //   list.appendChild(option);
+  // });
 
   function myFunction2() {
     // var x = document.getElementById("accesslevel");
@@ -369,14 +633,12 @@ $(document).ready(function() {
     // }
     document.getElementById("demo").innerHTML = window.floornames;
   }
-</script> -->
+</script>
 
 
-<!-- <button onclick="myFunction2()">Try it</button>
+<button onclick="myFunction2()">Try it</button>
 
 <p id="demo"></p> -->
-
-
 
 
 <form class="accessLevel w3-container" style="padding:0px 20px 16px" id="accesslevel">
@@ -384,9 +646,9 @@ $(document).ready(function() {
     <legend> <h4>Access level list:</h4> </legend>
     <div>
     Name: <br>
-    <input type="text" name="access_name" id="access_name" value="Guest"><br>
+    <input type="text" id="access_name" value="Guest"><br>
     Access level: <br>
-    <input type="number" name="access-level" value="0">
+    <input type="number" id="access_level" value="0">
     </div>
     <button class="add_form_field_access">Add another access level &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
   </fieldset>
@@ -397,36 +659,30 @@ $(document).ready(function() {
 </div>
 <!-- TODO: this button be fake, please make it work -->
 
+<!-- <script>
+  function myFunction2() {
+    document.getElementById("demo").innerHTML = window.acsx;
+  }
+</script>
+
+
+<button onclick="myFunction2()">Print ish</button>
+<p id="demo"></p> -->
+
+
 
 <div class="user w3-container" style="padding:0px 20px 16px" >
   <fieldset>
     <legend> <h4>Users list:</h4> </legend>
     <div>
     Name: <br>
-    <input type="text" name="user-name" value="John"><br>
+    <input type="text" id="user_name" value="John"><br>
     Password: <br>
-    <input type="password" name="user-password"><br>
+    <input type="password" id="user_password"><br>
     Access Level: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels">
-      <option value="Guest"></option>
-      <option value="Children"></option>
-      <option value="Admin"></option>
-    </datalist>
-    <!-- TODO: drop-down doesn't work -->
-    <script>
-    var list = document.getElementById('access_levels');
-
-    window.accessnames.forEach(function(item){
-       var option = document.createElement('option');
-       option.value = item;
-       list.appendChild(option);
-    });
-    </script>
-
+    <select id="access_levels"></select>
     </div>
-    <button class="add_form_field_access">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+    <button class="add_form_field_user">Add another user &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
   </fieldset>
 </div>
 
@@ -474,8 +730,6 @@ $(document).ready(function() {
 <p id="demo2"></p> -->
 
 
-
-
 <!-- <input name="car" list="anrede" />
 <datalist id="anrede"></datalist>
 
@@ -496,10 +750,9 @@ mycars.forEach(function(item){
     <legend> <h4>Service list:</h4> </legend>
     <div>
     Name: <br>
-    <input type="text" name="service-name" value="Lighting">
+    <input type="text" id="service_name" value="Lighting">
   </div>
-  <button class="add_form_field_access">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  <button class="add_form_field_service">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 </fieldset>
 </div>
 
@@ -551,28 +804,25 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Scalar </h5></legend>
         <span class="tooltiptext">A “scalar” is an integer value that can be represented by 8 bits (for values from 0 to 255 or -128 to 127) or by 16 bits (for values from 0 to 65535 or -32768 to 32767).</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="scalar_name" value="Intensity"><br>
+        <input type="text" id="sc_name" value="Intensity"><br>
         Number of bits: <br>
-        <input list="numbits" name="numbits">
-        <datalist id="numbits">
-          <option value="8"></option>
-          <option value="16"></option>
-        </datalist><br>
+        <Select id="numbits">
+          <option>8</option>
+          <option>16</option>
+        </select><br>
         Unit: <br>
-        <input type="text" name="" value="%"><br>
+        <input type="text" id="sc_unit" value="%"><br>
         Minimum Value: <br>
-        <input type="number" name="" value="0"><br>
+        <input type="number" id="sc_min" value="0"><br>
         Maximum Vlaue: <br>
-        <input type="number" name="" value="100"><br>
+        <input type="number" id="sc_max" value="100"><br>
         Step size: <br>
-        <input type="number" name="" value="10"><br>
+        <input type="number" id="sc_step" value="10"><br>
       </div>
-      <button class="add_form_field_access">Add another scalar value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <button class="add_form_field_scalar">Add another scalar value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
       <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
     </div>
@@ -583,23 +833,28 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Enumerated </h5></legend>
         <span class="tooltiptext">An “enumerated” value type corresponds to pairs "name, value" (value is represented by an 8 bit quantity).</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="" value="state">
-        <button class="add_form_field_access">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
+        <input type="text" id="enum_name" value="state">
+        <button class="add_form_field_enumeration">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
         <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
         Name: <br>
-        <input type="text" name="" value="off"><br>
+        <input type="text" id="enumed_name1" value="off"><br>
         Value: <br>
-        <input type="number" name="" value="0"><br>
+        <input type="number" id="enumed_value1" value="0"><br>
+        Name: <br>
+        <input type="text" id="enumed_name2" value="on"><br>
+        Value: <br>
+        <input type="number" id="enumed_value2" value="1"><br>
+      </div><br>
 
-      </div>
-      <button class="add_form_field_access">Add another enumerated value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-      <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
+    </div>
+
+    <div style="padding:0px 20px 16px">
+    <button class="add_form_field_enumValueType">Add another enumerated value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br><br>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
     </div>
 
     <div class="array w3-container" style="padding:0px 20px 16px">
@@ -607,59 +862,60 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Array </h5></legend>
         <span class="tooltiptext">Array of bytes, usually used in cases where 16 bits are not enough.</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="" value="Power consumption"><br>
+        <input type="text" id="arr_name" value="Power consumption"><br>
         Maximum length: <br>
-        <input type="number" name="" value="99999.99"><br>
+        <input type="number" id="arr_max" value="99999.99"><br>
       </div>
-      <button class="add_form_field_access">Add another array value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <button class="add_form_field_array">Add another array value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
       <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
     </div>
 </fieldset>
-
+</div>
 
 <div class="device_types w3-container" style="padding:0px 20px 16px">
   <fieldset>
-    <legend> <h4>Device types:</h4> </legend>
+    <legend> <h4>Device Types:</h4> </legend>
     <div>
     <!--  TODO: add default values-->
     Name: <br>
-    <input type="text" name="" value="Temperature Sensor"><br>
+    <input type="text" id="devt_name" value="Temperature Sensor"><br>
     Description: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="devt_desc" value=" - ">
+    <button class="add_form_field_devTypeProp">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <br>
     Property name: <br>
-    <input type="text" name="" value="Temperature">
-    <button class="add_form_field_access">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up --> <br>
+    <input type="text" id="dev_prop_name" value="Temperature"><br>
     Access Mode: <br>
-    <input list="access_modes" name="access_modes">
-    <datalist id="access_modes">
-      <option value="Read and Write (RW)"></option>
-      <option value="Read Only (RO)"></option>
-      <option value="Write Only (WO)"></option>
-    </datalist><br>
+    <select id="dev_access_modes">
+      <option>Read and Write (RW)</option>
+      <option>Read Only (RO)</option>
+      <option>Write Only (WO)</option>
+    </select><br>
     <!-- TODO: save drop-down as Rw/Ro/wo  -->
     Value Type: <br>
-    <input list="value_types" name="value_types">
-    <datalist id="value_types">
-      <option value="Scalar"></option>
-      <option value="Enumerated"></option>
-      <option value="Array"></option>
-    </datalist><br>
+    <select id="dev_value_types">
+      <option>Scalar</option>
+      <option>Enumerated</option>
+      <option>Array</option>
+    </select><br>
     Referance to value type: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist>
-    <!-- TODO: drop-down doesn't work -->
+    <select id="value_types">
+      <option>Intensity</option>
+      <option>state</option>
+      <option>Power consumption</option>
+    </select>
+    <!-- TODO: drop-down is fake, fix it -->
 
   </div>
-  <button class="add_form_field_access">Add another device type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
   </fieldset>
+</div>
+
+<div style="padding:0px 20px 16px">
+  <button class="add_form_field_devType">Add another device type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 </div>
 
 
@@ -669,28 +925,27 @@ mycars.forEach(function(item){
     <div>
     <!--  TODO: add default values-->
     Name: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="devl_name" value="Kitchen Temperature"><br>
     Device type: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <input type="text" id="devl_dev" value="Temperature sensor"><br>
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
     Address:<br>
-    <input type="text" name="" value=""><br>
+    <input type="number" id="devl_add" value="10"><br>
     Division: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <input type="text" id="devl_div" value="Living Room">
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
-    Access level: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <!-- Access level: <br> TODO: add these functonalities
+    <input type="text" id="devl_acc"> -->
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
-    User Blocked: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <!-- User Blocked: <br>
+    <input type="text" id="devl_userb"> -->
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
   </div>
-  <button class="add_form_field_access">Add another device &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  <button class="add_form_field_device">Add another device &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 </fieldset>
 </div>
 
@@ -700,7 +955,7 @@ mycars.forEach(function(item){
   <div>
     <!--  TODO: add default values-->
     Scenario Name: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="" value=""><br>
     Action list:
     <button class="add_form_field_access">Add another action to this scenario &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
     <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
@@ -773,14 +1028,108 @@ mycars.forEach(function(item){
     window.file += '  </FloorList> \n';
 // Division
     window.file += '  <DivisionList> \n';
-    window.file += '    <Division ID="1" Name="' + String(document.getElementById('division-name').value) + '" RefFloor="'+  +'" /> \n';
+
+    var x = document.getElementById("floor-names").selectedIndex;
+    var y = document.getElementById("floor-names").options;
+    var f = y[x].index+1;
+
+    window.file += '    <Division ID="1" Name="' + String(document.getElementById('division-name').value) + '" RefFloor="'+ f +'" /> \n';
     for (i = 0; i < window.divx ;i++) {
       var id = i+2;
-      window.file += '    <Division ID="'+id+'" Name="' + String(document.getElementById('division-name'+i).value) + '" RefFloor="'+  +'" /> \n';
+      x = document.getElementById('floor-names' + i).selectedIndex;
+      y = document.getElementById('floor-names' + i).options;
+      f = y[x].index+1;
+      window.file += '    <Division ID="'+id+'" Name="' + String(document.getElementById('division-name'+i).value) + '" RefFloor="'+ f +'" /> \n';
     }
 
     window.file += '  </DivisionList> \n';
     window.file += '</House> \n';
+
+
+    window.file += '<AccessLevelList> \n';
+    window.file += '  <AccessLevel Level=“'+ String(document.getElementById('access_level').value) +'" Name=“'+ String(document.getElementById('access_name').value) +'" /> \n';
+    for (i = 0; i < window.acsx ;i++) {
+      window.file += '  <AccessLevel Level=“'+ String(document.getElementById('access_level'+i).value) +'" Name=“'+ String(document.getElementById('access_name'+i).value) +'" /> \n';
+    }
+    window.file += '</AccessLevelList> \n';
+
+    window.file += '<UserList> \n';
+    x = document.getElementById("access_levels").selectedIndex;
+    y = document.getElementById("access_levels").options;
+    // f = y[x].text;
+    window.file += '  User ID="1" Name= "'+ String(document.getElementById('user_name').value) +'" Password="'+ String(document.getElementById('user_password').value) +'" AccessLevel="'+ String(y[x].text) +'" />\n';
+    for (i = 0; i < window.userx ;i++) {
+      var id = i+2;
+      x = document.getElementById("access_levels"+i).selectedIndex;
+      y = document.getElementById("access_levels"+i).options;
+      // f = y[x].text;
+      window.file += '  User ID="'+ id +'" Name= "'+ String(document.getElementById('user_name'+i).value) +'" Password="'+ String(document.getElementById('user_password'+i).value) +'" AccessLevel="'+ String(y[x].text) +'" />\n';
+    }
+    window.file += '</UserList> \n';
+
+    window.file += '<ServiceList> \n';
+    window.file += '  <Service ID=“1" Name="'+ String(document.getElementById('service_name').value) +'" /> \n';
+    for (i = 0; i < window.servx ;i++) {
+      var id = i+2;
+      window.file += '  <Service ID=“'+ id +'" Name="'+ String(document.getElementById('service_name'+i).value) +'" /> \n';
+    }
+    window.file += '</ServiceList> \n';
+
+    window.file += '<ScalarValueTypeList> \n';
+    x = document.getElementById("numbits").selectedIndex;
+    y = document.getElementById("numbits").options;
+    window.file += '  <ScalarValueType ID=“1" Name="'+ String(document.getElementById('sc_name').value) +'" NumBits=“'+String(y[x].text)+'" Units=“'+ String(document.getElementById('sc_unit').value) +'" MinValue=“'+ String(document.getElementById('sc_min').value) +'“ MaxValue=“'+ String(document.getElementById('sc_max').value) +'" Step=“'+ String(document.getElementById('sc_step').value) +'“ /> \n';
+    for (i = 0; i < window.scax ;i++) {
+      var id = i+2;
+      x = document.getElementById("numbits" +i).selectedIndex;
+      y = document.getElementById("numbits"+i).options;
+      window.file += '  <ScalarValueType ID=“'+ id +'" Name="'+ String(document.getElementById('sc_name'+i).value) +'" NumBits=“'+String(y[x].text)+'" Units=“'+ String(document.getElementById('sc_unit'+i).value) +'" MinValue=“'+ String(document.getElementById('sc_min'+i).value) +'“ MaxValue=“'+ String(document.getElementById('sc_max'+i).value) +'" Step=“'+ String(document.getElementById('sc_step'+i).value) +'“ /> \n';
+    }
+    window.file += '</ScalarValueTypeList> \n';
+
+    window.file += '<EnumValueTypeList> \n';
+    window.file += '  <EnumValueType ID="1" Name ="'+ String(document.getElementById('enum_name').value) +'"> \n';
+    window.file += '    <Enumerated Name="'+String(document.getElementById('enumed_name1').value)+'" Value ="'+ String(document.getElementById('enumed_value1').value) +'"> \n';
+    window.file += '    <Enumerated Name="'+String(document.getElementById('enumed_name2').value)+'" Value ="'+ String(document.getElementById('enumed_value2').value) +'"> \n';
+    // TODO: fix this so it's dynamic and actually functionale
+    window.file += '  </EnumValueType> \n';
+    window.file += '</EnumValueTypeList> \n';
+
+
+
+    window.file += '<ArrayValueTypeList> \n';
+    window.file += '  <ArrayValueType ID="1" Name="'+String(document.getElementById('arr_name').value) +'" MaxLen="'+ String(document.getElementById('arr_max').value)+'"> \n';
+    window.file += '  <ArrayValueType> \n';
+    for (i = 0; i < window.arrx ;i++) {
+      var id = i+2;
+      window.file += '  <ArrayValueType ID="'+ id +'" Name="'+String(document.getElementById('arr_name'+i).value) +'" MaxLen="'+ String(document.getElementById('arr_max'+i).value)+'"> \n';
+      window.file += '  <ArrayValueType> \n';
+    }
+    window.file += '</ArrayValueTypeList> \n';
+
+    window.file += '<DeviceTypeList> \n';
+    window.file += '  <DeviceType ID=“1" Name=“'+String(document.getElementById('devt_name').value) +'" Description=“'+String(document.getElementById('devt_desc').value) +'"> \n';
+    window.file += '    <PropertyList> \n';
+    window.file += '      <Property ID=“1" Name="'+String(document.getElementById('dev_prop_name').value) +'" AccessMode=“RW" ValueType=“ENUM" RefValueType=“1" /> \n';
+    // window.file += '      <Property ID=“2" Name="'+String(document.getElementById('dev_prop_name'+window.devtypx).value) +'" AccessMode=“RW" ValueType=“SCALAR" RefValueType=“2" /> \n';
+    window.file += '      <Property ID=“2" Name="Intensity" AccessMode=“RW" ValueType=“SCALAR" RefValueType=“2" /> \n';
+
+    window.file += '    </PropertyList> \n';
+    window.file += '  </DeviceTypeList> \n';
+    window.file += '</DeviceTypeList> \n';
+
+
+    window.file += '<DeviceList> \n';
+    window.file += '  <Device ID=“1" RefDeviceType=“1" Name="'+String(document.getElementById('devl_name').value) +'" Address=“'+String(document.getElementById('devl_add').value) +'" RefDivision=“1" /> \n';
+    for (i = 0; i < window.devx ;i++) {
+      var id = i+2;
+      // x = document.getElementById("numbits" +i).selectedIndex;
+      // y = document.getElementById("numbits"+i).options;
+      //TODO: fix devision and device type ref
+      window.file += '  <Device ID=“'+ id +'" RefDeviceType=“2" Name="'+String(document.getElementById('devl_name'+i).value) +'" Address=“'+String(document.getElementById('devl_add'+i).value) +'" RefDivision=“1" /> \n';
+    }
+    window.file += '</DeviceList> \n';
+
 
 
     var filename = 'DomoBusSpec.xml';
@@ -798,14 +1147,6 @@ mycars.forEach(function(item){
   }
 </script>
 
-<!-- <form onsubmit="download(this['name'].value, this['text'].value)">
-  <input type="text" name="name" value="test.txt">
-  <textarea name="text"></textarea>
-  <input type="submit" value="Download">
-</form> -->
-
-
-
 
 <header class="w3-container w3-yellow w3-center" style="padding:50px">
   <!-- <h1>You're done!</h1> -->
@@ -816,9 +1157,6 @@ mycars.forEach(function(item){
     <button type="submit" class="w3-button w3-black w3-padding-large w3-small w3-margin-top"><i class="fa fa-download"></i> Create and Download XML file</button>
   </form>
 </header>
-
-
-
 
   <!-- Footer -->
   <!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity"> -->
