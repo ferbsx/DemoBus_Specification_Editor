@@ -114,7 +114,7 @@
 </script> -->
 
 <style>
-.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service, .add_form_field_scalar, .add_form_field_enumeration, .add_form_field_enumValueType, .add_form_field_array{
+.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service, .add_form_field_scalar, .add_form_field_enumeration, .add_form_field_enumValueType, .add_form_field_array, .add_form_field_devTypeProp, .add_form_field_devType, .add_form_field_device{
     background-color: #1c97f3;
     border: none;
     color: white;
@@ -128,7 +128,7 @@
 	border:1px solid #186dad;
 
 }
-.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service, .delete_scalar, .delete_enumeration, .delete_enumValueType, .delete_array{
+.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service, .delete_scalar, .delete_enumeration, .delete_enumValueType, .delete_array, .delete_devType, .delete_devTypeProp, .delete_device{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -428,6 +428,8 @@ $(document).ready(function() {
             // var enumedValue = "enumed_value" + window.enumvtx;
 // TODO: this doesn't really do what it's supposed to so fix it
             $(wrapper).append('<div>Name: <br><input type="text" id="enum_name"><button class="add_form_field_enumeration">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br>Name: <br><input type="text" id="enumed_name1"><br>Value: <br><input type="number" id="enumed_value1"><br>Name: <br><input type="text" id="enumed_name2"><br>Value: <br><input type="number" id="enumed_value2"><a href="#" class="delete_enumValueType">Delete this enumerated value type </a></div>'); //add input box
+            // TODO: this produces an unfunctional button, fix it
+
         }
 
 		else
@@ -471,6 +473,98 @@ $(document).ready(function() {
     })
 });
 
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_types");
+    var add_button      = $(".add_form_field_devTypeProp");
+
+    window.devtypx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devtypx < max_fields){
+            var devName = "dev_prop_name" + window.devtypx;
+            var devAccess = "dev_access_modes" + window.devtypx;
+            var devValueType = "dev_value_types" + window.devtypx;
+            // var devV = "value_types" + window.devtypx; //TODO: do so this works
+
+            $(wrapper).append('<div>Property name:<br><input type="text" id="'+devName+'"><br>Access Mode: <br><select id="'+devAccess+'"><option>Read and Write (RW)</option><option>Read Only (RO)</option><option>Write Only (WO)</option></select><br>Value Type: <br><select id="'+devValueType+'"><option>Scalar</option><option>Enumerated</option><option>Array</option></select><br>Referance to value type: <br><select id="value_types"><option>Intensity</option><option>state</option><option>Power consumption</option></select><a href="#" class="delete_devTypeProp">Delete this property for the device type</a></div>'); //add input box
+            window.devtypx++;
+
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_devTypeProp", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devtypx--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_types");
+    var add_button      = $(".add_form_field_devType");
+
+    window.devx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devx < max_fields){
+            var devtName = "devt_name" + window.devx;
+            var devtDesc = "devt_desc" + window.devx;
+
+            var devName = "dev_prop_name" + window.devx + window.devtypx;
+            var devAccess = "dev_access_modes" + window.devx + window.devtypx;
+            var devValueType = "dev_value_types" + window.devx + window.devtypx; //TODO: think if this makes sense
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+devtName+'"><br>Description: <br><input type="text" id="'+devtDesc+'" value=" - "><button class="add_form_field_devTypeProp">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br>Property name:<br><input type="text" id="'+devName+'"><br>Access Mode: <br><select id="'+devAccess+'"><option>Read and Write (RW)</option><option>Read Only (RO)</option><option>Write Only (WO)</option></select><br>Value Type: <br><select id="'+devValueType+'"><option>Scalar</option><option>Enumerated</option><option>Array</option></select><br>Referance to value type: <br><select id="value_types"><option>Intensity</option><option>state</option><option>Power consumption</option></select><a href="#" class="delete_devType">Delete this device type</a></div>'); //add input box
+            window.devx++;
+            // TODO: this produces an unfunctional button, fix it
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_devType", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devx--;
+    })
+});
+
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".device_list");
+    var add_button      = $(".add_form_field_device");
+
+    window.devx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.devx < max_fields){
+            var devlName = "devl_name" + window.devx;
+            var devlDev = "devl_dev" + window.devx;
+            var devlAdd = "devl_add" + window.devx;
+            var devlDiv = "devl_div" + window.devx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+devlName+'"><br>Device type: <br><input type="text" id="'+devlDev+'"><br>Address:<br><input type="number" id="'+devlAdd+'"><br>Division: <br><input type="text" id="'+devlDiv+'"><a href="#" class="delete_device">Delete this device type</a></div>'); //add input box
+            window.devx++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_device", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.devx--;
+    })
+});
 
 </script>
 
@@ -788,37 +882,40 @@ mycars.forEach(function(item){
     <div>
     <!--  TODO: add default values-->
     Name: <br>
-    <input type="text" name="" value="Temperature Sensor"><br>
+    <input type="text" id="devt_name" value="Temperature Sensor"><br>
     Description: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="devt_desc" value=" - ">
+    <button class="add_form_field_devTypeProp">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+    <br>
     Property name: <br>
-    <input type="text" name="" value="Temperature">
-    <button class="add_form_field_access">Add another property to this device type&nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up --> <br>
+    <input type="text" id="dev_prop_name" value="Temperature"><br>
     Access Mode: <br>
-    <input list="access_modes" name="access_modes">
-    <datalist id="access_modes">
-      <option value="Read and Write (RW)"></option>
-      <option value="Read Only (RO)"></option>
-      <option value="Write Only (WO)"></option>
-    </datalist><br>
+    <select id="dev_access_modes">
+      <option>Read and Write (RW)</option>
+      <option>Read Only (RO)</option>
+      <option>Write Only (WO)</option>
+    </select><br>
     <!-- TODO: save drop-down as Rw/Ro/wo  -->
     Value Type: <br>
-    <input list="value_types" name="value_types">
-    <datalist id="value_types">
-      <option value="Scalar"></option>
-      <option value="Enumerated"></option>
-      <option value="Array"></option>
-    </datalist><br>
+    <select id="dev_value_types">
+      <option>Scalar</option>
+      <option>Enumerated</option>
+      <option>Array</option>
+    </select><br>
     Referance to value type: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist>
-    <!-- TODO: drop-down doesn't work -->
+    <select id="value_types">
+      <option>Intensity</option>
+      <option>state</option>
+      <option>Power consumption</option>
+    </select>
+    <!-- TODO: drop-down is fake, fix it -->
 
   </div>
-  <button class="add_form_field_access">Add another device type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
   </fieldset>
+</div>
+
+<div style="padding:0px 20px 16px">
+  <button class="add_form_field_devType">Add another device type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 </div>
 
 
@@ -828,28 +925,27 @@ mycars.forEach(function(item){
     <div>
     <!--  TODO: add default values-->
     Name: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="devl_name" value="Kitchen Temperature"><br>
     Device type: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <input type="text" id="devl_dev" value="Temperature sensor"><br>
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
     Address:<br>
-    <input type="text" name="" value=""><br>
+    <input type="number" id="devl_add" value="10"><br>
     Division: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <input type="text" id="devl_div" value="Living Room">
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
-    Access level: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <!-- Access level: <br> TODO: add these functonalities
+    <input type="text" id="devl_acc"> -->
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
-    User Blocked: <br>
-    <input list="access_levels" name="user-access-level">
-    <datalist id="access_levels"></datalist><br>
+    <!-- User Blocked: <br>
+    <input type="text" id="devl_userb"> -->
+    <!-- <datalist id="access_levels"></datalist><br> -->
     <!-- TODO: drop-down doesn't work -->
   </div>
-  <button class="add_form_field_access">Add another device &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
+  <button class="add_form_field_device">Add another device &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 </fieldset>
 </div>
 
@@ -859,7 +955,7 @@ mycars.forEach(function(item){
   <div>
     <!--  TODO: add default values-->
     Scenario Name: <br>
-    <input type="text" name="" value=""><br>
+    <input type="text" id="" value=""><br>
     Action list:
     <button class="add_form_field_access">Add another action to this scenario &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
     <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
@@ -1011,6 +1107,28 @@ mycars.forEach(function(item){
     }
     window.file += '</ArrayValueTypeList> \n';
 
+    window.file += '<DeviceTypeList> \n';
+    window.file += '  <DeviceType ID=“1" Name=“'+String(document.getElementById('devt_name').value) +'" Description=“'+String(document.getElementById('devt_desc').value) +'"> \n';
+    window.file += '    <PropertyList> \n';
+    window.file += '      <Property ID=“1" Name="'+String(document.getElementById('dev_prop_name').value) +'" AccessMode=“RW" ValueType=“ENUM" RefValueType=“1" /> \n';
+    // window.file += '      <Property ID=“2" Name="'+String(document.getElementById('dev_prop_name'+window.devtypx).value) +'" AccessMode=“RW" ValueType=“SCALAR" RefValueType=“2" /> \n';
+    window.file += '      <Property ID=“2" Name="Intensity" AccessMode=“RW" ValueType=“SCALAR" RefValueType=“2" /> \n';
+
+    window.file += '    </PropertyList> \n';
+    window.file += '  </DeviceTypeList> \n';
+    window.file += '</DeviceTypeList> \n';
+
+
+    window.file += '<DeviceList> \n';
+    window.file += '  <Device ID=“1" RefDeviceType=“1" Name="'+String(document.getElementById('devl_name').value) +'" Address=“'+String(document.getElementById('devl_add').value) +'" RefDivision=“1" /> \n';
+    for (i = 0; i < window.devx ;i++) {
+      var id = i+2;
+      // x = document.getElementById("numbits" +i).selectedIndex;
+      // y = document.getElementById("numbits"+i).options;
+      //TODO: fix devision and device type ref
+      window.file += '  <Device ID=“'+ id +'" RefDeviceType=“2" Name="'+String(document.getElementById('devl_name'+i).value) +'" Address=“'+String(document.getElementById('devl_add'+i).value) +'" RefDivision=“1" /> \n';
+    }
+    window.file += '</DeviceList> \n';
 
 
 
@@ -1029,14 +1147,6 @@ mycars.forEach(function(item){
   }
 </script>
 
-<!-- <form onsubmit="download(this['name'].value, this['text'].value)">
-  <input type="text" name="name" value="test.txt">
-  <textarea name="text"></textarea>
-  <input type="submit" value="Download">
-</form> -->
-
-
-
 
 <header class="w3-container w3-yellow w3-center" style="padding:50px">
   <!-- <h1>You're done!</h1> -->
@@ -1047,9 +1157,6 @@ mycars.forEach(function(item){
     <button type="submit" class="w3-button w3-black w3-padding-large w3-small w3-margin-top"><i class="fa fa-download"></i> Create and Download XML file</button>
   </form>
 </header>
-
-
-
 
   <!-- Footer -->
   <!-- <footer class="w3-container w3-padding-64 w3-center w3-opacity"> -->
