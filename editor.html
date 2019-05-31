@@ -114,7 +114,7 @@
 </script> -->
 
 <style>
-.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service{
+.add_form_field_floor,.add_form_field_access, .add_form_field_division, .add_form_field_user, .add_form_field_service, .add_form_field_scalar, .add_form_field_enumeration, .add_form_field_enumValueType, .add_form_field_array{
     background-color: #1c97f3;
     border: none;
     color: white;
@@ -128,7 +128,7 @@
 	border:1px solid #186dad;
 
 }
-.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service{
+.delete_access, .delete_floor, .delete_division, .delete_user, .delete_service, .delete_scalar, .delete_enumeration, .delete_enumValueType, .delete_array{
     background-color: #fd1200;
     border: none;
     color: white;
@@ -353,6 +353,125 @@ $(document).ready(function() {
     })
 });
 
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".scalar");
+    var add_button      = $(".add_form_field_scalar");
+
+    window.scax = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.scax < max_fields){
+            var scName = "sc_name" + window.scax;
+            var numb = "numbits" + window.scax;
+            var scUnit = "sc_unit" + window.scax;
+            var scMin = "sc_min" + window.scax;
+            var scMax = "sc_max" + window.scax;
+            var scStep = "sc_step" + window.scax;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+scName+'"><br>Number of bits: <br><Select id="'+numb+'"><option>8</option><option>16</option></select><br>Unit: <br><input type="text" id="'+scUnit+'"><br>Minimum Value: <br><input type="number" id="'+scMin+'"><br>Maximum Vlaue: <br><input type="number" id="'+scMax+'"><br>Step size: <br><input type="number" id="'+scStep+'"><br><a href="#" class="delete_scalar">Delete this scalar type</a></div>'); //add input box
+            window.scax++;
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_scalar", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.scax--;
+    })
+});
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".enum");
+    var add_button      = $(".add_form_field_enumeration");
+
+    window.enumerationx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.enumerationx < max_fields){
+            window.enumerationx = window.enumerationx+ 3;
+            var enumedName = "enumed_name" + window.enumerationx;
+            var enumedValue = "enumed_value" + window.enumerationx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+enumedName+'"><br>Value: <br><input type="number" id="'+enumedValue+'"><a href="#" class="delete_enumeration">Delete this enumeration</a></div>'); //add input box
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_enumeration", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.enumerationx--;
+    })
+});
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".enum");
+    var add_button      = $(".add_form_field_enumValueType");
+
+    window.enumvtx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.enumvtx < max_fields){
+            window.enumvtx = window.enumvtx+ 3;
+            // var enumedName = "enumed_name" + window.enumvtx;
+            // var enumedValue = "enumed_value" + window.enumvtx;
+// TODO: this doesn't really do what it's supposed to so fix it
+            $(wrapper).append('<div>Name: <br><input type="text" id="enum_name"><button class="add_form_field_enumeration">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br>Name: <br><input type="text" id="enumed_name1"><br>Value: <br><input type="number" id="enumed_value1"><br>Name: <br><input type="text" id="enumed_name2"><br>Value: <br><input type="number" id="enumed_value2"><a href="#" class="delete_enumValueType">Delete this enumerated value type </a></div>'); //add input box
+        }
+
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_enumValueType", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.enumvtx--;
+    })
+});
+
+
+$(document).ready(function() {
+    var max_fields      = 100;
+    var wrapper         = $(".array");
+    var add_button      = $(".add_form_field_array");
+
+    window.arrx = 0;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(window.arrx < max_fields){
+            var arrName = "arr_name" + window.arrx;
+            var arrMax = "arr_max" + window.arrx;
+
+            $(wrapper).append('<div>Name: <br><input type="text" id="'+arrName+'"><br>Maximum length: <br><input type="number" id="'+arrMax+'"><a href="#" class="delete_array">Delete this array value type</a></div>'); //add input box
+            window.arrx++;
+
+        }
+		else
+		{
+		alert('You Reached the limits')
+		}
+    });
+
+    $(wrapper).on("click",".delete_array", function(e){
+        e.preventDefault(); $(this).parent('div').remove();
+        window.arrx--;
+    })
+});
+
+
 </script>
 
 
@@ -540,7 +659,6 @@ mycars.forEach(function(item){
     <input type="text" id="service_name" value="Lighting">
   </div>
   <button class="add_form_field_service">Add another service &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-  <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
 </fieldset>
 </div>
 
@@ -592,28 +710,25 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Scalar </h5></legend>
         <span class="tooltiptext">A “scalar” is an integer value that can be represented by 8 bits (for values from 0 to 255 or -128 to 127) or by 16 bits (for values from 0 to 65535 or -32768 to 32767).</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="scalar_name" value="Intensity"><br>
+        <input type="text" id="sc_name" value="Intensity"><br>
         Number of bits: <br>
-        <input list="numbits" name="numbits">
-        <datalist id="numbits">
-          <option value="8"></option>
-          <option value="16"></option>
-        </datalist><br>
+        <Select id="numbits">
+          <option>8</option>
+          <option>16</option>
+        </select><br>
         Unit: <br>
-        <input type="text" name="" value="%"><br>
+        <input type="text" id="sc_unit" value="%"><br>
         Minimum Value: <br>
-        <input type="number" name="" value="0"><br>
+        <input type="number" id="sc_min" value="0"><br>
         Maximum Vlaue: <br>
-        <input type="number" name="" value="100"><br>
+        <input type="number" id="sc_max" value="100"><br>
         Step size: <br>
-        <input type="number" name="" value="10"><br>
+        <input type="number" id="sc_step" value="10"><br>
       </div>
-      <button class="add_form_field_access">Add another scalar value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <button class="add_form_field_scalar">Add another scalar value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
       <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
     </div>
@@ -624,23 +739,28 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Enumerated </h5></legend>
         <span class="tooltiptext">An “enumerated” value type corresponds to pairs "name, value" (value is represented by an 8 bit quantity).</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="" value="state">
-        <button class="add_form_field_access">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
+        <input type="text" id="enum_name" value="state">
+        <button class="add_form_field_enumeration">Add another enumeration under this name &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button> <br>
         <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
         Name: <br>
-        <input type="text" name="" value="off"><br>
+        <input type="text" id="enumed_name1" value="off"><br>
         Value: <br>
-        <input type="number" name="" value="0"><br>
+        <input type="number" id="enumed_value1" value="0"><br>
+        Name: <br>
+        <input type="text" id="enumed_name2" value="on"><br>
+        Value: <br>
+        <input type="number" id="enumed_value2" value="1"><br>
+      </div><br>
 
-      </div>
-      <button class="add_form_field_access">Add another enumerated value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
-      <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
+    </div>
+
+    <div style="padding:0px 20px 16px">
+    <button class="add_form_field_enumValueType">Add another enumerated value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button><br><br>
+    <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
     </div>
 
     <div class="array w3-container" style="padding:0px 20px 16px">
@@ -648,16 +768,14 @@ mycars.forEach(function(item){
       <div class="tooltip">
         <legend> <h5>Array </h5></legend>
         <span class="tooltiptext">Array of bytes, usually used in cases where 16 bits are not enough.</span>
-        <!--  TODO: add explanation-->
       </div>
       <div>
-        <!--  TODO: add default values-->
         Name: <br>
-        <input type="text" name="" value="Power consumption"><br>
+        <input type="text" id="arr_name" value="Power consumption"><br>
         Maximum length: <br>
-        <input type="number" name="" value="99999.99"><br>
+        <input type="number" id="arr_max" value="99999.99"><br>
       </div>
-      <button class="add_form_field_access">Add another array value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+      <button class="add_form_field_array">Add another array value type &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
       <!-- TODO: button is fake and doesn't work, the JS needs to be set-up -->
       </fieldset>
     </div>
@@ -861,8 +979,37 @@ mycars.forEach(function(item){
     }
     window.file += '</ServiceList> \n';
 
+    window.file += '<ScalarValueTypeList> \n';
+    x = document.getElementById("numbits").selectedIndex;
+    y = document.getElementById("numbits").options;
+    window.file += '  <ScalarValueType ID=“1" Name="'+ String(document.getElementById('sc_name').value) +'" NumBits=“'+String(y[x].text)+'" Units=“'+ String(document.getElementById('sc_unit').value) +'" MinValue=“'+ String(document.getElementById('sc_min').value) +'“ MaxValue=“'+ String(document.getElementById('sc_max').value) +'" Step=“'+ String(document.getElementById('sc_step').value) +'“ /> \n';
+    for (i = 0; i < window.scax ;i++) {
+      var id = i+2;
+      x = document.getElementById("numbits" +i).selectedIndex;
+      y = document.getElementById("numbits"+i).options;
+      window.file += '  <ScalarValueType ID=“'+ id +'" Name="'+ String(document.getElementById('sc_name'+i).value) +'" NumBits=“'+String(y[x].text)+'" Units=“'+ String(document.getElementById('sc_unit'+i).value) +'" MinValue=“'+ String(document.getElementById('sc_min'+i).value) +'“ MaxValue=“'+ String(document.getElementById('sc_max'+i).value) +'" Step=“'+ String(document.getElementById('sc_step'+i).value) +'“ /> \n';
+    }
+    window.file += '</ScalarValueTypeList> \n';
+
+    window.file += '<EnumValueTypeList> \n';
+    window.file += '  <EnumValueType ID="1" Name ="'+ String(document.getElementById('enum_name').value) +'"> \n';
+    window.file += '    <Enumerated Name="'+String(document.getElementById('enumed_name1').value)+'" Value ="'+ String(document.getElementById('enumed_value1').value) +'"> \n';
+    window.file += '    <Enumerated Name="'+String(document.getElementById('enumed_name2').value)+'" Value ="'+ String(document.getElementById('enumed_value2').value) +'"> \n';
+    // TODO: fix this so it's dynamic and actually functionale
+    window.file += '  </EnumValueType> \n';
+    window.file += '</EnumValueTypeList> \n';
 
 
+
+    window.file += '<ArrayValueTypeList> \n';
+    window.file += '  <ArrayValueType ID="1" Name="'+String(document.getElementById('arr_name').value) +'" MaxLen="'+ String(document.getElementById('arr_max').value)+'"> \n';
+    window.file += '  <ArrayValueType> \n';
+    for (i = 0; i < window.arrx ;i++) {
+      var id = i+2;
+      window.file += '  <ArrayValueType ID="'+ id +'" Name="'+String(document.getElementById('arr_name'+i).value) +'" MaxLen="'+ String(document.getElementById('arr_max'+i).value)+'"> \n';
+      window.file += '  <ArrayValueType> \n';
+    }
+    window.file += '</ArrayValueTypeList> \n';
 
 
 
